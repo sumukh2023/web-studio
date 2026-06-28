@@ -18,12 +18,23 @@ const spacingMap = {
 /** A consistent vertical rhythm wrapper for page sections. */
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
   (
-    { className, container = true, spacing = 'md', as = 'section', children, ...props },
+    {
+      className,
+      container = true,
+      spacing = 'md',
+      as = 'section',
+      children,
+      ...props
+    },
     ref
   ) => {
     const Comp = as as React.ElementType;
     return (
-      <Comp ref={ref} className={cn('relative', spacingMap[spacing], className)} {...props}>
+      <Comp
+        ref={ref}
+        className={cn('relative', spacingMap[spacing], className)}
+        {...props}
+      >
         {container ? <div className="container">{children}</div> : children}
       </Comp>
     );
@@ -60,7 +71,7 @@ export function SectionHeading({
           {eyebrow}
         </span>
       )}
-      <h2 className="font-display text-3xl font-bold tracking-tightest text-gradient sm:text-4xl md:text-5xl">
+      <h2 className="text-gradient font-display text-3xl font-bold tracking-tightest sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {description && (

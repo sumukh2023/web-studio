@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cn } from '@/utils/cn';
 import { GlassCard } from '@/components/GlassCard';
 
-export interface BentoGridProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type BentoGridProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** A responsive 3-column bento grid. Children control their own span. */
 export function BentoGrid({ className, children, ...props }: BentoGridProps) {
@@ -19,7 +19,10 @@ export function BentoGrid({ className, children, ...props }: BentoGridProps) {
   );
 }
 
-export interface BentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface BentoCardProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'title'
+> {
   /** Column span on large screens. */
   colSpan?: 1 | 2 | 3;
   /** Row span on large screens. */

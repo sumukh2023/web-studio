@@ -58,7 +58,10 @@ export const reveal = (
 
 export const fadeVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: DURATION.base, ease: EASE.out } },
+  visible: {
+    opacity: 1,
+    transition: { duration: DURATION.base, ease: EASE.out },
+  },
 };
 
 export const scaleVariants: Variants = {
@@ -71,7 +74,10 @@ export const scaleVariants: Variants = {
 };
 
 /** Parent that staggers its children. Pair with `childVariants`. */
-export const containerVariants = (stagger = 0.08, delayChildren = 0): Variants => ({
+export const containerVariants = (
+  stagger = 0.08,
+  delayChildren = 0
+): Variants => ({
   hidden: {},
   visible: {
     transition: { staggerChildren: stagger, delayChildren },

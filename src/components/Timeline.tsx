@@ -44,9 +44,7 @@ export function Timeline({ items, className }: TimelineProps) {
             <span
               className={cn(
                 'absolute left-0 top-1.5 grid h-4 w-4 place-items-center rounded-full bg-gradient-to-br from-primary to-accent ring-4 ring-background',
-                i % 2 === 0
-                  ? 'sm:-left-2'
-                  : 'sm:left-auto sm:-right-2'
+                i % 2 === 0 ? 'sm:-left-2' : 'sm:-right-2 sm:left-auto'
               )}
             />
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">

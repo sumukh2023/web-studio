@@ -10,20 +10,26 @@ export interface AuroraBackgroundProps {
  * Ambient hero backdrop: floating gradient blobs, a faint grid, and a
  * film-grain noise layer. Purely decorative.
  */
-export function AuroraBackground({ className, grid = true }: AuroraBackgroundProps) {
+export function AuroraBackground({
+  className,
+  grid = true,
+}: AuroraBackgroundProps) {
   return (
     <div
       aria-hidden
-      className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}
+      className={cn(
+        'pointer-events-none absolute inset-0 overflow-hidden',
+        className
+      )}
     >
       {/* Gradient blobs */}
-      <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-primary/30 opacity-50 blur-[120px] animate-float" />
+      <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] animate-float rounded-full bg-primary/30 opacity-50 blur-[120px]" />
       <div
-        className="absolute -right-24 top-10 h-[26rem] w-[26rem] rounded-full bg-accent/30 opacity-50 blur-[120px] animate-float"
+        className="absolute -right-24 top-10 h-[26rem] w-[26rem] animate-float rounded-full bg-accent/30 opacity-50 blur-[120px]"
         style={{ animationDelay: '-2s' }}
       />
       <div
-        className="absolute bottom-0 left-1/3 h-[22rem] w-[22rem] rounded-full bg-cyan-500/20 opacity-50 blur-[120px] animate-float"
+        className="absolute bottom-0 left-1/3 h-[22rem] w-[22rem] animate-float rounded-full bg-cyan-500/20 opacity-50 blur-[120px]"
         style={{ animationDelay: '-4s' }}
       />
 

@@ -4,8 +4,7 @@ import { cn } from '@/utils/cn';
 import { buttonVariants, type ButtonProps } from '@/components/ui/button';
 import { springSoft } from '@/utils/motion';
 
-export interface AnimatedButtonProps
-  extends Omit<ButtonProps, 'asChild'> {
+export interface AnimatedButtonProps extends Omit<ButtonProps, 'asChild'> {
   /** Add a sweeping shine highlight on hover. */
   shine?: boolean;
 }
@@ -34,7 +33,7 @@ export const AnimatedButton = React.forwardRef<
       {shine && (
         <span
           aria-hidden
-          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full hover:translate-x-full"
+          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out hover:translate-x-full group-hover:translate-x-full"
         />
       )}
       <span className="relative z-10 inline-flex items-center gap-2">

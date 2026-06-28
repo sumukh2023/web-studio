@@ -30,5 +30,13 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // shadcn-style primitives intentionally co-export `cva` variant helpers
+    // alongside their component, which the react-refresh rule flags.
+    files: ['src/components/ui/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
   prettier
 );

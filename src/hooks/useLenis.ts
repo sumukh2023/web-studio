@@ -12,7 +12,11 @@ export interface UseLenisOptions {
  * Mount a single Lenis smooth-scroll instance for the page and drive it with
  * a RAF loop. Returns a ref to the instance for programmatic `scrollTo`.
  */
-export function useLenis({ enabled = true, lerp = 0.1, duration = 1.1 }: UseLenisOptions = {}) {
+export function useLenis({
+  enabled = true,
+  lerp = 0.1,
+  duration = 1.1,
+}: UseLenisOptions = {}) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {

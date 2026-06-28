@@ -12,8 +12,7 @@ export function useScrollProgress() {
 
     const update = () => {
       const scrollTop = window.scrollY;
-      const height =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(height > 0 ? Math.min(scrollTop / height, 1) : 0);
       ticking = false;
     };

@@ -48,7 +48,10 @@ export function Footer({
     <Section as="footer" spacing="md" className="border-t border-border">
       <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
         <div className="max-w-xs">
-          <a href="#top" className="flex items-center gap-2 font-heading text-lg font-bold">
+          <a
+            href="#top"
+            className="flex items-center gap-2 font-heading text-lg font-bold"
+          >
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent text-sm font-black text-white">
               W
             </span>
@@ -91,7 +94,9 @@ export function Footer({
       </div>
 
       <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
-        <p>© {new Date().getFullYear()} {brand}. Built for the win.</p>
+        <p>
+          © {new Date().getFullYear()} {brand}. Built for the win.
+        </p>
         <p>Crafted with React, Vite & Tailwind.</p>
       </div>
     </Section>

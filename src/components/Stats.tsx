@@ -15,7 +15,12 @@ export interface StatsProps {
   className?: string;
 }
 
-function useCountUp(target: number, active: boolean, duration = 1400, decimals = 0) {
+function useCountUp(
+  target: number,
+  active: boolean,
+  duration = 1400,
+  decimals = 0
+) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -45,7 +50,7 @@ function StatItem({ stat }: { stat: Stat }) {
 
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-4xl font-extrabold tracking-tight text-gradient-brand sm:text-5xl">
+      <div className="text-gradient-brand font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
         {stat.prefix}
         {value.toLocaleString(undefined, {
           minimumFractionDigits: stat.decimals ?? 0,
@@ -61,12 +66,7 @@ function StatItem({ stat }: { stat: Stat }) {
 /** Animated count-up stat band. */
 export function Stats({ stats, className }: StatsProps) {
   return (
-    <div
-      className={cn(
-        'grid grid-cols-2 gap-8 sm:grid-cols-4',
-        className
-      )}
-    >
+    <div className={cn('grid grid-cols-2 gap-8 sm:grid-cols-4', className)}>
       {stats.map((stat) => (
         <StatItem key={stat.label} stat={stat} />
       ))}

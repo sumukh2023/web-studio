@@ -2,11 +2,10 @@ import * as React from 'react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
-export interface GlassCardProps
-  extends Omit<
-    React.HTMLAttributes<HTMLDivElement>,
-    'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'
-  > {
+export interface GlassCardProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'
+> {
   /** Show a spotlight that follows the cursor across the card. */
   spotlight?: boolean;
 }

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { AnimatedButton } from '@/components/AnimatedButton';
+import { Button } from '@/components/ui/button';
 import { AuroraBackground } from '@/components/assets/AuroraBackground';
 import { containerVariants, childVariants } from '@/utils/motion';
 
@@ -48,7 +48,7 @@ export function Hero({
 
           <motion.h1
             variants={childVariants}
-            className="font-display text-4xl font-extrabold leading-[1.05] tracking-tightest text-gradient sm:text-6xl md:text-7xl"
+            className="text-gradient font-display text-4xl font-extrabold leading-[1.05] tracking-tightest sm:text-6xl md:text-7xl"
           >
             {title}
           </motion.h1>
@@ -64,15 +64,15 @@ export function Hero({
             variants={childVariants}
             className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <AnimatedButton variant="gradient" size="lg" className="group" asChild={false}>
-              <a href={primaryCta.href} className="inline-flex items-center gap-2">
+            <Button variant="gradient" size="lg" className="group" asChild>
+              <a href={primaryCta.href}>
                 {primaryCta.label}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
-            </AnimatedButton>
-            <AnimatedButton variant="glass" size="lg" shine={false}>
+            </Button>
+            <Button variant="glass" size="lg" asChild>
               <a href={secondaryCta.href}>{secondaryCta.label}</a>
-            </AnimatedButton>
+            </Button>
           </motion.div>
 
           <motion.p
