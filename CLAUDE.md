@@ -37,8 +37,9 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
   shadows, gradients.
 - `src/components/` — reusable library: `Navbar`, `Hero`, `Footer`, `Section`/
   `SectionHeading`, `GlassCard`, `FeatureCard`, `BentoGrid`/`BentoCard`, `Stats`
-  (count-up), `Timeline`, `FAQ`, `Marquee`, `AnimatedButton`, `CursorGlow`,
-  `ScrollProgress`; `components/ui/` shadcn primitives; `components/assets/`
+  (count-up), `Timeline`, `FAQ`, `Testimonials`, `Gallery`, `Marquee`,
+  `AnimatedButton`, `CursorGlow`, `ScrollProgress`; `components/ui/` shadcn
+  primitives; `components/assets/`
   (`AuroraBackground`, `Noise`, `Avatar`).
 - `src/components/animations/` — `FadeIn`, `SlideUp`, `ScaleIn`, `StaggerChildren`/
   `StaggerItem`, `HoverLift`, `Reveal` (GSAP). Shared tokens in `src/utils/motion.ts`.

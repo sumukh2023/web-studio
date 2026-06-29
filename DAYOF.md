@@ -86,6 +86,18 @@ If all six steps worked, your D-Day pipeline is proven end to end.
   ```
   Leave `npm run dev` running — it hot-reloads as you pull.
 
+### Step 0.5 — Decide the concept FIRST (~10 min, don't touch code yet)
+Before any building, lock a direction. In Claude (chat or Code), ask:
+
+> The competition theme is **"<THEME>"**. Give me 5 distinct website concepts.
+> For each: the core idea, the mood/palette, the hero moment, and which of our
+> existing sections it would use. Then tell me which is the most visually
+> impressive and most defensible to judges, and why.
+
+Pick **one**. Then spend ~5 min sketching the page order (Hero → Stats →
+Interactive → Gallery → Timeline → Testimonials → CTA → Footer — drop/add to fit).
+Only then brief Claude Code to build. A clear concept beats fast typing.
+
 ### Step 1 — Brief Claude Code (the big prompt)
 In Claude Code, paste a clear brief. Tell it the **theme**, the **goal**, and to
 **use the existing starter**. Example:
@@ -121,6 +133,26 @@ In Claude Code, paste a clear brief. Tell it the **theme**, the **goal**, and to
 ### Step 5 — Present
 - Present from the **Vercel production URL** (most reliable).
 - Keep the **VS Code localhost** preview as offline backup.
+
+---
+
+## 🎤 Presentation — explain WHY, not just WHAT
+
+Most teams narrate *what* they built. You win by explaining *why* — judges reward
+design rationale as much as visual polish. Before the 1.5-hour presentation, have a
+one-line justification ready for every major decision, each tied back to the theme:
+
+- **Palette** — why these colors fit the theme's mood/audience.
+- **Typography** — why this display/heading pairing (tone, hierarchy).
+- **Animation** — why these motions (guide attention, reinforce concept) and why
+  they're subtle/performant + reduced-motion friendly.
+- **Layout & user flow** — why this section order tells the theme's story.
+- **Navigation** — why this structure makes the content effortless to scan.
+- **Accessibility & responsiveness** — why it works for everyone, on any device.
+
+Quick prep prompt (ask Claude after the build): *"Draft a 2-minute design-rationale
+script for this site on the theme '<THEME>', justifying palette, type, motion,
+layout, and flow — tie each to the theme and the judging criteria."*
 
 ---
 

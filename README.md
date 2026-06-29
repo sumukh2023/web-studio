@@ -123,7 +123,7 @@ every motion feels consistent. Smooth scrolling is provided globally by Lenis vi
 
 Layout: `Navbar`, `Hero`, `Footer`, `Section` / `SectionHeading`, `RootLayout`
 · Surfaces: `GlassCard` (cursor spotlight), `FeatureCard`, `BentoGrid` / `BentoCard`
-· Content: `Stats` (count-up), `Timeline`, `FAQ`, `Marquee`
+· Content: `Stats` (count-up), `Timeline`, `FAQ`, `Testimonials`, `Gallery`, `Marquee`
 · Chrome: `AnimatedButton`, `CursorGlow`, `ScrollProgress`
 · Primitives: `Button`, `Card`, `Badge`, `Accordion`
 · Decorative: `AuroraBackground`, `Noise`, `Avatar`

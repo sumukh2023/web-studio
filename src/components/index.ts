@@ -23,6 +23,10 @@ export { Timeline } from './Timeline';
 export type { TimelineItem, TimelineProps } from './Timeline';
 export { FAQ } from './FAQ';
 export type { FAQItem, FAQProps } from './FAQ';
+export { Testimonials } from './Testimonials';
+export type { Testimonial, TestimonialsProps } from './Testimonials';
+export { Gallery } from './Gallery';
+export type { GalleryItem, GalleryProps } from './Gallery';
 export { Marquee } from './Marquee';
 export type { MarqueeProps } from './Marquee';
 

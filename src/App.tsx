@@ -5,6 +5,8 @@ import {
   BentoSection,
   MetricsSection,
   ShowcaseSection,
+  TestimonialsSection,
+  GallerySection,
   TimelineSection,
   FAQSection,
   CTASection,
@@ -18,7 +20,9 @@ export default function App() {
       <BentoSection />
       <MetricsSection />
       <ShowcaseSection />
+      <GallerySection />
       <TimelineSection />
+      <TestimonialsSection />
       <FAQSection />
       <CTASection />
     </RootLayout>
