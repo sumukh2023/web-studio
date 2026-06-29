@@ -132,3 +132,60 @@ In Claude Code, paste a clear brief. Tell it the **theme**, the **goal**, and to
 - "Make it feel more like **<Apple/Stripe/Linear>** — refine spacing, type scale, motion."
 - "Audit for responsiveness and accessibility; fix any issues; keep build green."
 - "Resolve conflicts with main and update the PR."
+
+---
+
+## 🤖 How Claude Code (web) uses this repo
+
+When you start a session at **claude.ai/code** on `webfinity-2026`, the cloud VM
+**clones the whole repo** — so all your components, sections, design tokens, hooks,
+the vendored design skills in `.claude/skills/`, and `CLAUDE.md` are already there.
+Claude **composes and adapts** them; it does not "re-install" or "re-deploy" them —
+they're simply present. `CLAUDE.md` is auto-loaded and tells Claude to reuse the
+starter, theme via tokens, and keep the build green, so reuse is the default.
+
+It works in the cloud, **opens a PR** (never commits straight to `main`), and you
+review → merge → Vercel deploys. Reliability of reuse still depends on a clear
+prompt — always say "use the existing system, don't start from scratch."
+
+### Full-brief prompt template (copy, fill `<THEME>`)
+
+> The competition theme is **"<THEME>"**. Design and build a complete, polished
+> single-page site for it using THIS repo's existing system — do NOT start from
+> scratch. Specifically:
+> • Re-theme the design tokens in `src/styles/globals.css` to a palette that fits
+>   the theme, keeping the light/dark structure (and adjust fonts in
+>   `tailwind.config.ts` if it helps).
+> • Reuse the existing components/sections (`src/components`, `src/sections`):
+>   Hero, BentoGrid, Stats, Timeline, FAQ, Marquee, GlassCard, AnimatedButton —
+>   re-skin and re-word them for the theme.
+> • Add new sections only where the theme genuinely needs them, in the existing
+>   component style.
+> • Use the design skills in `.claude/skills/` for token/shadcn/accessibility guidance.
+> • Match the polish of Apple/Stripe/Linear. Responsive + accessible.
+> • Ensure `npm run build`, `npm run typecheck`, and `npm run lint` all pass.
+> • Work on a branch and open a PR.
+
+Example (carnival): replace `<THEME>` with *"School Carnival"* and add
+"map the event schedule to Timeline, attractions/rides to the Bento grid, ticket
+tiers to cards, and a parents' FAQ; add a festive 'Get Tickets' CTA."
+
+---
+
+## 🖼️ AI-generated assets (important limitation)
+
+External **MCP connectors do NOT work in claude.ai/code cloud sessions** — only the
+first-party GitHub integration is loaded. So an image/video generator like
+**Higgsfield MCP**, even if connected to your Claude account, **cannot be called
+from a web Claude Code session.**
+
+If a theme needs custom imagery:
+
+1. Generate it beforehand in **claude.ai chat** (with the generator connected), or
+   any tool you like.
+2. **Commit the files into `public/`** (e.g. `public/hero.jpg`).
+3. Reference them in code (`<img src="/hero.jpg" />`) — no MCP needed at runtime.
+
+Note: the starter is designed to look great with **CSS gradients, the aurora
+backdrop, and noise** — usually no external images are required. Also check the
+competition rules on externally-generated AI assets before relying on them.
