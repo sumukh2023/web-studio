@@ -49,6 +49,31 @@ to *preview* and *review* what Claude pushes — not to be the source of truth.
 
 ---
 
+## 🧪 Pre-event dry run (do this once, in advance)
+
+Rehearse the full loop so there are zero surprises on the clock:
+
+1. Open **https://claude.ai/code** → select `sumukh2023/webfinity-2026`, branch `main`.
+2. Paste this tiny task:
+
+   > On a new branch, change the hero badge text from "Webfinity 2026 Starter" to
+   > "Dry Run ✅". Keep `npm run build` green. Open a PR.
+
+3. Wait for Claude to **open a PR** on GitHub.
+4. Confirm the loop pieces work:
+   - **Vercel** posts a **preview URL** on the PR (or check the Vercel dashboard) →
+     open it, verify the badge changed.
+   - In **VS Code** (Remote Repositories + GitHub Pull Requests extensions), open the
+     PR and read the diff.
+5. **Merge** the PR on GitHub.
+6. Confirm **Vercel production** rebuilds and the live URL updates.
+7. Clean up: either revert with a quick "revert the badge text to the original" task,
+   or just leave it — you'll re-theme everything on the day anyway.
+
+If all six steps worked, your D-Day pipeline is proven end to end.
+
+---
+
 ## ⏱️ D-Day loop (theme is announced)
 
 ### Step 0 — Open your three windows
