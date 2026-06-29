@@ -111,3 +111,53 @@ Use when you want a bespoke illustrated/interactive/3D piece. Workflow is always
    types green; open a PR."
 5. Learn the export flow for Lottie/Rive/Spline **before** the event so it's muscle
    memory, not a first-time fumble on the clock.
+
+---
+
+## Multimedia libraries — R3F / Spline / Lottie / Rive
+
+**Default: none are installed. Add only the ONE your theme needs, in that build's PR.**
+GSAP + Framer + Lenis already cover ~90% of premium motion.
+
+| Tool | What | Add when | Minimal setup | Best for |
+| --- | --- | --- | --- | --- |
+| React Three Fiber | React renderer for Three.js (code-driven WebGL 3D) | theme is inherently 3D | `three @react-three/fiber @react-three/drei`; lazy-load; `frameloop="demand"`; cap DPR | abstract/generative 3D |
+| Spline | visual 3D editor; you design, export URL/component | want designed 3D, no Three.js code | hosted scene URL (don't bundle MBs); lazy-load + fallback | a bespoke 3D hero |
+| Lottie | vector animation JSON; huge free library | decorative/illustrative motion | `lottie-react` (or dotLottie); JSON in `public/`; lazy-load | loaders, accents, celebratory motion |
+| Rive | interactive vector w/ state machines | reactive hover/scroll/click piece | `@rive-app/react-canvas`; tiny `.riv` in `public/` | mascot/logo that reacts |
+
+### Full-bleed scroll backgrounds (Awwwards / motionsites style)
+Yes — all four can fill the viewport behind scrolling content. The pattern is a
+fixed/absolute full-screen layer at `z-0` with your sections at `z-10` on top:
+
+```tsx
+// Hero or page background
+<div className="relative">
+  <div className="pointer-events-none fixed inset-0 -z-10">
+    {/* <Spline> / R3F <Canvas> / <LottiePlayer> / <RiveAnimation> here */}
+  </div>
+  <main className="relative z-10">{/* scrolling sections */}</main>
+</div>
+```
+For scroll-reactive backgrounds, drive the layer with **GSAP ScrollTrigger** (scrub)
+or Lenis scroll progress. For 3D (R3F/Spline) this is the heaviest option — always
+lazy-load + provide a static gradient fallback + cap mobile cost.
+
+### Lazy-load + fallback pattern (use for any heavy media)
+```tsx
+import { lazy, Suspense } from 'react';
+const Heavy = lazy(() => import('@/components/HeavyHero')); // 3D/Spline/etc.
+
+<Suspense fallback={<AuroraBackground />}>
+  <Heavy />
+</Suspense>
+```
+This keeps the initial bundle small; the heavy code only downloads when needed, and
+users see the lightweight `AuroraBackground` until it's ready.
+
+### Prompting Claude Code
+- **Asset tools (Spline/Lottie/Rive)** → design-first, then a near-template wiring
+  prompt: "Add `<pkg>`, render `public/<file>` as a lazy-loaded full-bleed `-z-10`
+  background, static fallback, reduced-motion aware, open a PR."
+- **Code tools (R3F)** → natural-language motion spec (no visual editor): describe
+  the scene, materials, colors, and scroll/pointer interaction precisely.
