@@ -65,6 +65,12 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
   (`AuroraBackground`, `Noise`, `Avatar`).
 - `src/components/animations/` — `FadeIn`, `SlideUp`, `ScaleIn`, `StaggerChildren`/
   `StaggerItem`, `HoverLift`, `Reveal` (GSAP). Shared tokens in `src/utils/motion.ts`.
+- `src/components/motion/` — **Motion Primitives** (ibelick/motion-primitives, MIT):
+  33 vendored animated components (`TextEffect`, `AnimatedNumber`, `BorderTrail`,
+  `AnimatedGroup`, `Carousel`, `GlowEffect`, `Tilt`, `Magnetic`, `Spotlight`,
+  `TextShimmer`, `Dock`, `InfiniteSlider`, …). Import directly, e.g.
+  `import { TextEffect } from '@/components/motion/text-effect'`. Pull more from
+  their registry: `npx shadcn add "https://motion-primitives.com/c/<name>.json"`.
 - `src/sections/` — page sections composed from components.
 - `src/layouts/RootLayout.tsx` — app shell (smooth scroll + nav/footer/chrome).
 - `src/App.tsx` — assembles the page. Re-theme and recompose this for the brief.
@@ -121,13 +127,21 @@ automatically in any Claude Code session (local or cloud) on this repo:
   the brief, infers a direction, and ships non-templated UI. Pick a register with
   `minimalist-skill` / `soft-skill` / `brutalist-skill`, use `redesign-skill` for
   audit-first redesigns, and `output-skill` to avoid half-finished output.
+- **emilkowalski/skills** (MIT, by Emil Kowalski of animations.dev) — expert
+  motion judgment. `animation-vocabulary` and `emil-design-eng` inform how you
+  build animation; **`review-animations` is a motion-quality gate** — run it on
+  any non-trivial motion work before shipping (it flags by default, approval is
+  earned). Prefer the vendored `src/components/motion/` primitives over hand-rolled
+  animation.
 
 **The enforced website workflow (all three tools):**
 1. `ui-ux-pro-max` query → get the style, palette, and font pairing (Golden rule 3).
 2. `taste-skill` → confirm the direction fits the brief and is not templated.
 3. Build by reusing components; write the palette/fonts into the tokens.
-4. `impeccable detect src/` → fix every flag.
-5. Only then open the PR.
+4. For non-trivial motion, use `src/components/motion/` primitives and run the
+   `review-animations` skill; fix what it flags.
+5. `impeccable detect src/` → fix every flag.
+6. Only then open the PR.
 
 Vendored copies; update via each project's upstream repo (`npx impeccable
 install`, `npx skills add Leonxlnx/taste-skill`). See `.claude/skills/SOURCE.md`.

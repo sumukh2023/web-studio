@@ -38,3 +38,13 @@ skills (anti-slop)"):
   the image-gen / brandkit / Codex-only / stitch / v1 skills were omitted.
 
 Each vendored skill keeps its upstream LICENSE. Update via the upstream CLIs.
+
+## Animation skills (emilkowalski/skills, added)
+
+Vendored from Emil Kowalski's skills repo (https://github.com/emilkowalski/skills,
+MIT): animation-vocabulary, emil-design-eng, and review-animations (+ STANDARDS.md).
+SKILL.md skills that give Claude Code expert motion judgment; review-animations is
+a manual motion-quality gate (disable-model-invocation). Update by re-copying upstream.
+
+Note: animated UI components from ibelick/motion-primitives (MIT) are vendored
+separately under src/components/motion/ (components, not skills).
