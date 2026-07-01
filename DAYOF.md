@@ -207,21 +207,29 @@ prompt — always say "use the existing system, don't start from scratch."
 
 ### Full-brief prompt template (copy, fill `<THEME>`)
 
+Paste this as your **first message**. It enforces the full design workflow across
+all five vendored tools, which raises adherence far above a bare "build me a site".
+
 > The competition theme is **"<THEME>"**. Design and build a complete, polished
-> single-page site for it using THIS repo's existing system — do NOT start from
-> scratch. Specifically:
-> • Re-theme the design tokens in `src/styles/globals.css` to a palette that fits
->   the theme, keeping the light/dark structure (and adjust fonts in
->   `tailwind.config.ts` if it helps).
-> • Reuse the existing components/sections (`src/components`, `src/sections`):
->   Hero, BentoGrid, Stats, Timeline, FAQ, Marquee, GlassCard, AnimatedButton —
->   re-skin and re-word them for the theme.
-> • Add new sections only where the theme genuinely needs them, in the existing
->   component style.
-> • Use the design skills in `.claude/skills/` for token/shadcn/accessibility guidance.
-> • Match the polish of Apple/Stripe/Linear. Responsive + accessible.
-> • Ensure `npm run build`, `npm run typecheck`, and `npm run lint` all pass.
-> • Work on a branch and open a PR.
+> single-page site for it using THIS repo's existing system. Follow `CLAUDE.md`.
+> Do NOT start from scratch. Work in this exact order:
+> 1. **Design system (ui-ux-pro-max):** run
+>    `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product / industry / mood keywords for the theme>" --design-system -p "<THEME>"`,
+>    then write the returned palette (hex) into `src/styles/globals.css` tokens and
+>    the font pairing into `tailwind.config.ts` + the Google Fonts link in `index.html`.
+> 2. **Direction (taste-skill):** use the `taste-skill` skill to commit to a
+>    non-templated direction for this theme and audience. Banned by default:
+>    gradient-text, glassmorphism, aurora/mesh blobs, cream+serif "vintage" defaults,
+>    an eyebrow on every section, and em-dashes.
+> 3. **Build:** reuse the components/sections in `src/components` + `src/sections`
+>    (Hero, BentoGrid, Stats, Timeline, FAQ, Marquee, GlassCard, AnimatedButton),
+>    re-skinned and re-worded. For animation, prefer the `src/components/motion/`
+>    primitives. Add new sections only where the theme genuinely needs them.
+> 4. **Review (review-animations):** run the `review-animations` skill on any
+>    non-trivial motion and fix what it flags. Match the polish of Apple / Stripe /
+>    Linear. Fully responsive + accessible.
+> 5. **Gate:** ensure `npm run build`, `npm run typecheck`, `npm run lint`, and
+>    `npx impeccable detect src/` ALL pass, then work on a branch and open a PR.
 
 Example (carnival): replace `<THEME>` with *"School Carnival"* and add
 "map the event schedule to Timeline, attractions/rides to the Bento grid, ticket
