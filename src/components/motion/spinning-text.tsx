@@ -1,4 +1,3 @@
-'use client';
 import { cn } from '@/utils/cn';
 import { motion, Transition, Variants } from 'framer-motion';
 import React, { CSSProperties } from 'react';

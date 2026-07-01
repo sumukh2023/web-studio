@@ -1,4 +1,3 @@
-'use client';
 import { type JSX } from 'react';
 import { motion, Transition } from 'framer-motion';
 import { cn } from '@/utils/cn';

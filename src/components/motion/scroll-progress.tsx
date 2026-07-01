@@ -1,5 +1,3 @@
-'use client';
-
 import { motion, SpringOptions, useScroll, useSpring } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { RefObject } from 'react';

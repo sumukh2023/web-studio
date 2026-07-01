@@ -1,4 +1,3 @@
-'use client';
 import { AnimatePresence, motion, Transition, Variants } from 'framer-motion';
 import React, { createContext, useContext, useEffect, useRef } from 'react';
 import { cn } from '@/utils/cn';
