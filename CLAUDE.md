@@ -135,9 +135,9 @@ install`, `npx skills add Leonxlnx/taste-skill`). See `.claude/skills/SOURCE.md`
 **The detector gate is automated.** A committed pre-push hook (`.githooks/pre-push`,
 wired via the `prepare` script on `npm install`) runs `npx impeccable detect src/`
 and blocks pushes on any finding. Run it yourself with `npm run slop:check`.
-Emergency bypass: `git push --no-verify`. A matching GitHub Action lives at
-`ci/slop-check.yml`; copy it to `.github/workflows/slop-check.yml` (via the GitHub
-web UI or a `workflow`-scoped token) to enforce the same check on every PR.
+Emergency bypass: `git push --no-verify`. The same check runs in CI via the
+`Slop check` GitHub Action (`.github/workflows/slop-check.yml`) on every PR and
+push to `main`.
 
 ## Commands
 
