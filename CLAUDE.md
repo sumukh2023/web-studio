@@ -32,12 +32,23 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
    `tailwind.config.ts`. This is non-negotiable and applies even under time
    pressure. Do NOT invent a palette or reach for a default font. See "Design
    intelligence database" below.
-4. **Keep it green.** `npm run build`, `npm run typecheck`, and `npm run lint` must
+4. **Run the anti-slop frameworks (MANDATORY).** Use `taste-skill`
+   (`design-taste-frontend`, plus the `minimalist`/`soft`/`brutalist` style
+   variants and `redesign-skill`) to infer the brief and commit to a
+   non-templated direction, then gate EVERY build with the `impeccable` slop
+   detector before you open a PR:
+   ```bash
+   npx impeccable detect src/    # or: node .claude/skills/impeccable/scripts/detector/cli/main.mjs src/
+   ```
+   Fix every flag. Banned by default: gradient-text, glassmorphism, aurora/mesh
+   blobs, cream+serif "vintage" defaults, an eyebrow on every section, and
+   em-dashes. See "Design skills (anti-slop)" below.
+5. **Keep it green.** `npm run build`, `npm run typecheck`, and `npm run lint` must
    all pass before you open a PR. Run them.
-5. **Match the quality bar:** Apple / Stripe / Linear / Vercel. Prioritize
+6. **Match the quality bar:** Apple / Stripe / Linear / Vercel. Prioritize
    typography, spacing, responsiveness, accessibility (semantic HTML, focus
    states, reduced-motion), and subtle, performant animation.
-6. **Work on a branch and open a PR.** Don't commit straight to `main`. Keep
+7. **Work on a branch and open a PR.** Don't commit straight to `main`. Keep
    commits small and logically scoped with clear messages.
 
 ## Where things live
@@ -58,9 +69,11 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
 - `src/layouts/RootLayout.tsx` — app shell (smooth scroll + nav/footer/chrome).
 - `src/App.tsx` — assembles the page. Re-theme and recompose this for the brief.
 - `src/hooks/` — `useLenis`, `useScrollProgress`, `useMediaQuery`, `useMousePosition`.
-- `.claude/skills/` — vendored design skills: **`ui-ux-pro-max`** (the design
-  database: styles, palettes, font pairings, UX rules — query it first, see
-  Golden rule 3), plus `ui-styling` + `design-system` for shadcn/Tailwind/token
+- `.claude/skills/` — vendored design skills: **`ui-ux-pro-max`** (design
+  database: styles, palettes, font pairings, UX rules — query it first, Golden
+  rule 3); the anti-slop frameworks **`impeccable`** (detector + 23 commands)
+  and **`taste-skill`** (+ `redesign`/`minimalist`/`soft`/`brutalist`/`output`),
+  Golden rule 4; and `ui-styling` + `design-system` for shadcn/Tailwind/token
   guidance. See `.claude/skills/SOURCE.md`.
 - `README.md` — full component + theming docs. `DAYOF.md` — competition playbook.
 
@@ -94,6 +107,30 @@ CSS variables in `globals.css`, and the font pairing into `tailwind.config.ts`
 Data lives in `.claude/skills/ui-ux-pro-max/data/*.csv` if you want to read it
 directly. Vendored copy (see `.claude/skills/SOURCE.md`); update via the
 upstream repo.
+
+## Design skills (anti-slop)
+
+Two anti-slop frameworks are vendored under `.claude/skills/` and load
+automatically in any Claude Code session (local or cloud) on this repo:
+
+- **impeccable** (`pbakaus/impeccable`, Apache-2.0) — a design vocabulary plus a
+  deterministic slop **detector**. Drive it with its commands (`craft`, `shape`,
+  `audit`, `polish`, `typeset`, `colorize`, `animate`, `distill`, …) and gate
+  work with `npx impeccable detect src/` (Golden rule 4).
+- **taste-skill** (`Leonxlnx/taste-skill`, MIT) — `design-taste-frontend` reads
+  the brief, infers a direction, and ships non-templated UI. Pick a register with
+  `minimalist-skill` / `soft-skill` / `brutalist-skill`, use `redesign-skill` for
+  audit-first redesigns, and `output-skill` to avoid half-finished output.
+
+**The enforced website workflow (all three tools):**
+1. `ui-ux-pro-max` query → get the style, palette, and font pairing (Golden rule 3).
+2. `taste-skill` → confirm the direction fits the brief and is not templated.
+3. Build by reusing components; write the palette/fonts into the tokens.
+4. `impeccable detect src/` → fix every flag.
+5. Only then open the PR.
+
+Vendored copies; update via each project's upstream repo (`npx impeccable
+install`, `npx skills add Leonxlnx/taste-skill`). See `.claude/skills/SOURCE.md`.
 
 ## Commands
 
