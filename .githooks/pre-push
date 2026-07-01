@@ -1,0 +1,10 @@
+#!/bin/sh
+# Block pushes that introduce UI anti-patterns (impeccable slop detector).
+# See CLAUDE.md Golden rule 4. Skip once with: git push --no-verify
+echo "» impeccable: scanning src/ for UI anti-patterns…"
+if ! npx --yes impeccable@2.3.2 detect src/; then
+  echo ""
+  echo "✗ Push blocked: fix the anti-patterns above, or bypass with 'git push --no-verify'."
+  exit 1
+fi
+echo "✓ No anti-patterns found."

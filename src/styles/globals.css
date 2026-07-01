@@ -120,13 +120,14 @@
 /*  Reusable utilities                                                 */
 /* ------------------------------------------------------------------ */
 @layer utilities {
-  /* Gradient clipped to text */
+  /* Solid ink headings (no gradient-text tell). */
   .text-gradient {
-    @apply bg-gradient-to-br from-foreground via-foreground to-foreground/40 bg-clip-text text-transparent;
+    @apply text-foreground;
   }
 
+  /* Accent words use the brand colour. */
   .text-gradient-brand {
-    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+    @apply text-primary;
   }
 
   /* Frosted glass surface */
