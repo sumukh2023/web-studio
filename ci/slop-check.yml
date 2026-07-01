@@ -1,0 +1,19 @@
+name: Slop check (impeccable)
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  detect:
+    name: impeccable detect src/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Deterministic slop detector (44 rules). Non-zero exit => job fails.
+      - name: Run impeccable slop detector
+        run: npx --yes impeccable@2.3.2 detect src/

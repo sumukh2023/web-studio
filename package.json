@@ -12,7 +12,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "slop:check": "npx --yes impeccable@2.3.2 detect src/"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.1",
