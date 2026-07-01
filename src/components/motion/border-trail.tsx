@@ -1,4 +1,3 @@
-'use client';
 import { cn } from '@/utils/cn';
 import { motion, Transition } from 'framer-motion';
 

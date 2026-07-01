@@ -1,4 +1,3 @@
-'use client';
 import React, { useRef, useState } from 'react';
 import { motion, MotionConfig } from 'framer-motion';
 import useClickOutside from '@/hooks/useClickOutside';

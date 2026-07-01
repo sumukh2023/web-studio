@@ -1,4 +1,3 @@
-'use client';
 import { cn } from '@/utils/cn';
 import { motion, SpringOptions, useSpring, useTransform } from 'framer-motion';
 import { useEffect } from 'react';
