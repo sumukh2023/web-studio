@@ -71,6 +71,12 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
   `TextShimmer`, `Dock`, `InfiniteSlider`, …). Import directly, e.g.
   `import { TextEffect } from '@/components/motion/text-effect'`. Pull more from
   their registry: `npx shadcn add "https://motion-primitives.com/c/<name>.json"`.
+- **Component registries** are configured in `components.json`:
+  `@motion-primitives` and `@react-bits` (David Haz, reactbits.dev). Pull on
+  demand with `npx shadcn add @react-bits/<name>` (or the full URL). **React Bits
+  is MIT + Commons Clause: USE its components in a build, but do NOT commit their
+  source into this public starter as a reusable bundle** (redistribution). Prefer
+  the MIT `src/components/motion/` primitives for anything reusable.
 - `src/sections/` — page sections composed from components.
 - `src/layouts/RootLayout.tsx` — app shell (smooth scroll + nav/footer/chrome).
 - `src/App.tsx` — assembles the page. Re-theme and recompose this for the brief.

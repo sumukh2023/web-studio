@@ -182,6 +182,25 @@ layout, and flow — tie each to the theme and the judging criteria."*
 
 ---
 
+## 🧩 Extra component sources (on demand)
+
+Two component registries are wired into `components.json`, so Claude can pull
+components mid-build without them living in the repo:
+
+- **motion-primitives** (MIT): `npx shadcn add @motion-primitives/<name>` — or just
+  use the 33 already vendored in `src/components/motion/`.
+- **React Bits** (reactbits.dev, David Haz): `npx shadcn add @react-bits/<name>`.
+  Optional MCP for discovery: `npx shadcn@latest mcp init --client claude`, then
+  restart Claude Code and ask it to browse React Bits. **Licence note:** React Bits
+  is MIT + Commons Clause — fine to *use* a component in a build, but do NOT commit
+  its source into this public starter as a reusable bundle.
+
+If the cloud Claude Code session can't reach the MCP, the plain
+`npx shadcn add "https://reactbits.dev/r/<name>.json"` command still works
+(needs network). Test this in your dry run.
+
+---
+
 ## 🎯 Prompt starters for Claude Code
 
 - "Re-theme the whole site for **<theme>**: update tokens, fonts, and hero copy."
