@@ -16,5 +16,9 @@
     "ui": "@/components/ui",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "registries": {
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@motion-primitives": "https://motion-primitives.com/c/{name}.json"
+  }
 }
