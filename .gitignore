@@ -37,3 +37,7 @@ dist-ssr
 .cache
 .turbo
 coverage
+
+# python bytecode
+__pycache__/
+*.pyc
