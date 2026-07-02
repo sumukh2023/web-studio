@@ -7,49 +7,56 @@ Follow it for all work in this repository.
 
 `webfinity-2026` is a **premium, reusable frontend starter** for design
 competitions and hackathons (theme announced on the day; ~2.5h to design + build,
-then present). The goal each event is to adapt this starter into a polished site
-for the given theme **as fast as possible** — not to rebuild from scratch.
+then present). The goal each event is to build a polished, ANIMATED site for the theme
+**from scratch, fast**, using this starter's vendored design tools and primitives.
+The starter is a **toolkit + building blocks, NOT a page template to re-skin.**
+The old demo marketing page now lives in `examples/landing-demo/` as reference
+only (see Golden rule 1).
 
 Stack: React 18 + Vite + TypeScript (strict) · Tailwind CSS v3 with CSS-variable
 design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-react.
 
 ## Golden rules (most important)
 
-1. **Reuse, don't rebuild.** Compose the existing components and sections. Only
-   write new components when nothing existing can be adapted. Never scaffold a new
-   project or replace the architecture.
-2. **Theme via tokens first.** Re-skin the whole site by editing the CSS variables
-   in `src/styles/globals.css` (and fonts in `tailwind.config.ts`). Prefer token
-   changes over hard-coded colors.
-3. **Query the design database before you pick anything (MANDATORY).** Before you
-   choose colours, fonts, or a visual style, you MUST run the vendored
-   `ui-ux-pro-max` skill and base your tokens on what it returns:
+1. **Build from scratch for the brief. Do NOT reuse the example skeleton.**
+   The old pre-composed marketing sections live in `examples/landing-demo/` as
+   REFERENCE ONLY. Never import them, and never use that "Hero -> Features ->
+   Bento -> Metrics -> Timeline -> FAQ -> CTA" section pool as your page
+   structure, re-worded. That is the exact AI-slop failure this starter guards
+   against. Design a section structure specific to THIS brief and compose it
+   fresh from the primitives (`src/components/`, `src/components/motion/`) and
+   design tokens. `src/App.tsx` ships as a from-scratch shell — replace it. The
+   design-process gate FAILS any `src/` build that imports `examples/`.
+2. **Query the design database first (MANDATORY).** Before choosing any colour,
+   font, or style, run the vendored `ui-ux-pro-max` skill and base your tokens on
+   what it returns, then RECORD it in `.design/brief.md`:
    ```bash
    python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product/industry/keywords>" --design-system -p "<Project>"
    ```
-   Take the returned STYLE, COLORS (hex + CSS var names) and TYPOGRAPHY (Google
-   Fonts + Tailwind config) and write them into `src/styles/globals.css` and
-   `tailwind.config.ts`. This is non-negotiable and applies even under time
-   pressure. Do NOT invent a palette or reach for a default font. See "Design
-   intelligence database" below.
-4. **Run the anti-slop frameworks (MANDATORY).** Use `taste-skill`
-   (`design-taste-frontend`, plus the `minimalist`/`soft`/`brutalist` style
-   variants and `redesign-skill`) to infer the brief and commit to a
-   non-templated direction, then gate EVERY build with the `impeccable` slop
-   detector before you open a PR:
-   ```bash
-   npx impeccable detect src/    # or: node .claude/skills/impeccable/scripts/detector/cli/main.mjs src/
-   ```
-   Fix every flag. Banned by default: gradient-text, glassmorphism, aurora/mesh
-   blobs, cream+serif "vintage" defaults, an eyebrow on every section, and
-   em-dashes. See "Design skills (anti-slop)" below.
-5. **Keep it green.** `npm run build`, `npm run typecheck`, and `npm run lint` must
-   all pass before you open a PR. Run them.
-6. **Match the quality bar:** Apple / Stripe / Linear / Vercel. Prioritize
-   typography, spacing, responsiveness, accessibility (semantic HTML, focus
-   states, reduced-motion), and subtle, performant animation.
-7. **Work on a branch and open a PR.** Don't commit straight to `main`. Keep
-   commits small and logically scoped with clear messages.
+   Write the returned STYLE, PALETTE (hex + CSS var names) and TYPOGRAPHY into
+   `src/styles/globals.css`, `tailwind.config.ts`, `index.html`, and summarise
+   them in `.design/brief.md`. Do NOT invent a palette or default font. The gate
+   FAILS a build with no `.design/brief.md`.
+3. **Set a non-templated direction with taste-skill (MANDATORY).** Use
+   `taste-skill` (+ `minimalist`/`soft`/`brutalist` variants, `redesign-skill`)
+   to infer the brief and commit to a direction. Banned by default: gradient-text,
+   glassmorphism, aurora/mesh blobs, cream+serif "vintage" defaults, an eyebrow on
+   every section, em-dashes, three-equal-feature-card rows, and reused skeletons.
+4. **Animate it (MANDATORY). Build from the motion library.** This starter builds
+   ANIMATED sites. Compose real motion from `src/components/motion/` (`TextEffect`,
+   `AnimatedGroup`, `InView`, `BorderTrail`, `Magnetic`, `Spotlight`, …) plus the
+   `animations/` wrappers — a static wall of cards is slop. Run the
+   `review-animations` skill (Emil Kowalski) on any non-trivial motion and fix what
+   it flags. The gate FAILS a build that imports ZERO `@/components/motion`.
+5. **Theme via tokens.** Re-skin through the CSS variables in
+   `src/styles/globals.css` and fonts in `tailwind.config.ts`. No hard-coded colours.
+6. **Keep it green AND pass both gates.** `npm run build`, `npm run typecheck`,
+   `npm run lint`, `npm run slop:check` (impeccable detector) and
+   `npm run design:check` (design-process gate) must all pass before a PR.
+7. **Match the quality bar:** Apple / Stripe / Linear / Vercel. Typography,
+   spacing, responsiveness, accessibility (semantic HTML, focus states,
+   reduced-motion), and performant, meaningful animation.
+8. **Work on a branch and open a PR.** Never commit straight to `main`.
 
 ## Where things live
 
@@ -77,9 +84,14 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
   is MIT + Commons Clause: USE its components in a build, but do NOT commit their
   source into this public starter as a reusable bundle** (redistribution). Prefer
   the MIT `src/components/motion/` primitives for anything reusable.
-- `src/sections/` — page sections composed from components.
+- `examples/landing-demo/` — the old demo marketing sections + `App.demo.tsx`,
+  REFERENCE ONLY (outside the build/lint path). Do NOT import or reuse as a
+  skeleton (Golden rule 1); the design-process gate blocks it.
 - `src/layouts/RootLayout.tsx` — app shell (smooth scroll + nav/footer/chrome).
-- `src/App.tsx` — assembles the page. Re-theme and recompose this for the brief.
+- `src/App.tsx` — a **from-scratch shell** (carries a `FROM-SCRATCH-SHELL`
+  sentinel). Replace it entirely; build the page for the brief from scratch.
+- `.design/brief.md` — record the ui-ux-pro-max result here (Golden rule 2);
+  `scripts/verify-design-process.mjs` requires it once you leave the shell.
 - `src/hooks/` — `useLenis`, `useScrollProgress`, `useMediaQuery`, `useMousePosition`.
 - `.claude/skills/` — vendored design skills: **`ui-ux-pro-max`** (design
   database: styles, palettes, font pairings, UX rules — query it first, Golden
@@ -170,15 +182,23 @@ npm run lint       # eslint  (must pass)
 npm run format     # prettier --write
 ```
 
-## Adapting to a theme (typical flow)
+## Building for a theme (from scratch — the mandatory flow)
 
-1. Set the palette in `src/styles/globals.css` tokens (and fonts if it fits).
-2. Recompose `src/App.tsx` + `src/sections/` from existing blocks; re-word/re-skin
-   them for the theme (e.g. schedule → `Timeline`, attractions → `BentoGrid`,
-   tiers → cards, questions → `FAQ`).
-3. Add new sections only where the theme genuinely needs them, in the existing
-   component style.
-4. Run build + typecheck + lint. Fix everything. Open a PR.
+1. **Design DB:** run `ui-ux-pro-max --design-system`; write the palette/fonts into
+   `globals.css` + `tailwind.config.ts` + `index.html`; record it in `.design/brief.md`.
+2. **Direction:** use `taste-skill` to fix a non-templated direction for THIS brief.
+   Design a section structure specific to the brief — do NOT reach for the
+   `examples/landing-demo` pool.
+3. **Build from scratch** in a replaced `src/App.tsx`, composing primitives from
+   `src/components/` and real animation from `src/components/motion/`.
+4. **Review motion** with `review-animations`; fix what it flags.
+5. **Gate:** `npm run slop:check` + `npm run design:check` + build + typecheck +
+   lint must all pass. Open a PR.
+
+The design-process gate (`scripts/verify-design-process.mjs`, wired into the
+pre-push hook + CI) hard-fails any themed build that reuses `examples/`, imports
+zero motion primitives, or has no `.design/brief.md`. It stays quiet while
+`src/App.tsx` still has the from-scratch sentinel.
 
 ## Notes
 

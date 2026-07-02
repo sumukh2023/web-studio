@@ -226,33 +226,34 @@ prompt — always say "use the existing system, don't start from scratch."
 
 ### Full-brief prompt template (copy, fill `<THEME>`)
 
-Paste this as your **first message**. It enforces the full design workflow across
-all five vendored tools, which raises adherence far above a bare "build me a site".
+Paste this as your **first message**. It enforces the full from-scratch workflow
+across all five vendored tools. The repo's two gates (impeccable detector +
+design-process gate) will hard-fail a build that skips them, so this isn't just
+a suggestion.
 
-> The competition theme is **"<THEME>"**. Design and build a complete, polished
-> single-page site for it using THIS repo's existing system. Follow `CLAUDE.md`.
-> Do NOT start from scratch. Work in this exact order:
+> The competition theme is **"<THEME>"**. Build a complete, polished, ANIMATED
+> single-page site for it. Follow `CLAUDE.md`. **Build from scratch — do NOT reuse
+> `examples/landing-demo` or its section pool as a skeleton.** Work in this order:
 > 1. **Design system (ui-ux-pro-max):** run
->    `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product / industry / mood keywords for the theme>" --design-system -p "<THEME>"`,
->    then write the returned palette (hex) into `src/styles/globals.css` tokens and
->    the font pairing into `tailwind.config.ts` + the Google Fonts link in `index.html`.
-> 2. **Direction (taste-skill):** use the `taste-skill` skill to commit to a
->    non-templated direction for this theme and audience. Banned by default:
->    gradient-text, glassmorphism, aurora/mesh blobs, cream+serif "vintage" defaults,
->    an eyebrow on every section, and em-dashes.
-> 3. **Build:** reuse the components/sections in `src/components` + `src/sections`
->    (Hero, BentoGrid, Stats, Timeline, FAQ, Marquee, GlassCard, AnimatedButton),
->    re-skinned and re-worded. For animation, prefer the `src/components/motion/`
->    primitives. Add new sections only where the theme genuinely needs them.
-> 4. **Review (review-animations):** run the `review-animations` skill on any
->    non-trivial motion and fix what it flags. Match the polish of Apple / Stripe /
->    Linear. Fully responsive + accessible.
-> 5. **Gate:** ensure `npm run build`, `npm run typecheck`, `npm run lint`, and
->    `npx impeccable detect src/` ALL pass, then work on a branch and open a PR.
+>    `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product / industry / mood>" --design-system -p "<THEME>"`,
+>    write the palette (hex) into `src/styles/globals.css` and the fonts into
+>    `tailwind.config.ts` + `index.html`, and record it in `.design/brief.md`.
+> 2. **Direction (taste-skill):** commit to a non-templated direction and a section
+>    structure specific to THIS brief. Banned: gradient-text, glassmorphism,
+>    aurora/mesh blobs, cream+serif defaults, eyebrow-on-every-section, em-dashes,
+>    three-equal-feature-card rows.
+> 3. **Build from scratch:** replace `src/App.tsx` (remove the shell). Compose the
+>    primitives in `src/components/` and REAL animation from `src/components/motion/`
+>    (`TextEffect`, `AnimatedGroup`, `InView`, `BorderTrail`, …). No static walls of cards.
+> 4. **Review (review-animations):** run it on the motion and fix what it flags.
+>    Match the polish of Apple / Stripe / Linear. Responsive + accessible.
+> 5. **Gate:** `npm run build`, `npm run typecheck`, `npm run lint`,
+>    `npm run slop:check`, and `npm run design:check` must ALL pass. Then open a PR.
 
-Example (carnival): replace `<THEME>` with *"School Carnival"* and add
-"map the event schedule to Timeline, attractions/rides to the Bento grid, ticket
-tiers to cards, and a parents' FAQ; add a festive 'Get Tickets' CTA."
+Example (carnival): replace `<THEME>` with *"School Carnival"* and add "design a
+bespoke structure — e.g. a marquee hero with animated text, a schedule as a
+horizontal scroll timeline, food stalls as an interactive gallery — rather than a
+generic feature-grid landing page."
 
 ---
 

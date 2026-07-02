@@ -14,7 +14,8 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
     "typecheck": "tsc --noEmit",
     "prepare": "git config core.hooksPath .githooks || true",
-    "slop:check": "npx --yes impeccable@2.3.2 detect src/"
+    "slop:check": "npx --yes impeccable@2.3.2 detect src/",
+    "design:check": "node scripts/verify-design-process.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.1",
