@@ -1,11 +1,12 @@
 <div align="center">
 
-# Webfinity 2026 Starter
+# Web Studio
 
-**A premium, reusable frontend foundation for hackathons & design competitions.**
+**A premium, animated frontend starter kit — built for your first real build.**
 
-Clone it once, win with it for years. Built to ship Apple / Stripe / Linear-grade
-websites within a 2.5-hour competition window.
+For first-time web developers and "vibe coders": skip the setup tax and go
+straight to designing and shipping something that actually looks and feels
+premium, pairing with Claude Code the whole way.
 
 React · Vite · TypeScript · Tailwind · Framer Motion · GSAP · Lenis · shadcn/ui
 
@@ -15,11 +16,17 @@ React · Vite · TypeScript · Tailwind · Framer Motion · GSAP · Lenis · sha
 
 ## Why this exists
 
-The Webfinity competition gives you a theme and **2.5 hours** to design and build a
-complete website. This repo removes everything that isn't design or implementation:
-the toolchain, the animation system, a token-driven theme, and a polished component
-library are already wired up. When the theme drops, you re-skin tokens and compose
-components — no setup tax.
+Most starters hand you a folder of config and leave the hard part — making
+something that looks *good* — entirely up to you. This one is different: the
+toolchain, the animation system, a token-driven theme, and a polished
+component library are already wired up, and a vendored design database
+(`ui-ux-pro-max`) plus anti-slop skills guide you toward good taste even if
+you've never designed anything before. You (and Claude Code) focus on the
+brief; re-skin the tokens, compose the components, and ship.
+
+It also happens to work great under a competition clock — the same setup
+that gets a first-timer to a polished site in an evening gets a hackathon
+team there in 2.5 hours.
 
 ## Quick start
 
@@ -60,7 +67,7 @@ src/
   sections/              # landing-page sections composed from components
   styles/                # globals.css (design tokens live here)
   utils/                 # cn() + shared motion tokens
-  App.tsx                # the showcase landing page
+  App.tsx                # the from-scratch shell — replace it with your build
   main.tsx               # entry point
 ```
 
@@ -155,15 +162,22 @@ They land in `src/components/ui` with the right aliases and tokens.
 Vercel-ready out of the box. Import the repo, accept defaults (build `npm run build`,
 output `dist`), and ship. Any static host works — the build is a plain SPA.
 
-## Competition playbook
+## Your first build
 
-1. **00:00** — Clone, edit tokens in `globals.css` to match the brief.
-2. **00:20** — Wireframe by composing `Hero`, `BentoGrid`, `Stats`, `FAQ` blocks.
-3. **01:30** — Layer in reveals, cursor glow, smooth scroll for the premium feel.
-4. **02:30** — `npm run build` passes clean → deploy → present with confidence.
+1. **Start here** — clone, `npm install`, `npm run dev`. Read `CLAUDE.md`: it's
+   the workflow Claude Code follows in this repo, and it's worth skimming even
+   if a human is driving.
+2. **Get a direction** — run the vendored `ui-ux-pro-max` design database for
+   your brief (style, palette, font pairing) instead of guessing at colors.
+3. **Wireframe** — compose `Hero`, `BentoGrid`, `Stats`, `FAQ` and friends into
+   a structure that fits *your* idea, not a copy-pasted template.
+4. **Animate it** — layer in reveals, cursor glow, smooth scroll from
+   `src/components/motion/` for the premium feel.
+5. **Ship** — `npm run build` passes clean → deploy → you've shipped a real,
+   polished site.
 
 ---
 
 <div align="center">
-<sub>Crafted as a permanent frontend foundation. Built for the win.</sub>
+<sub>Crafted as a foundation for your first real build — and your best one.</sub>
 </div>

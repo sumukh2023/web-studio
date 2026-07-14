@@ -40,8 +40,8 @@ const defaultColumns: FooterColumn[] = [
 ];
 
 export function Footer({
-  brand = 'Webfinity',
-  tagline = 'A premium frontend starter for hackathons and design competitions.',
+  brand = 'Web Studio',
+  tagline = 'A premium, animated frontend starter for your first real build.',
   columns = defaultColumns,
 }: FooterProps) {
   return (
@@ -95,7 +95,7 @@ export function Footer({
 
       <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
         <p>
-          © {new Date().getFullYear()} {brand}. Built for the win.
+          © {new Date().getFullYear()} {brand}. Built to help you ship.
         </p>
         <p>Crafted with React, Vite & Tailwind.</p>
       </div>

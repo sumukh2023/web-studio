@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Design-process gate (Webfinity 2026).
+ * Design-process gate (Web Studio).
  *
  * Enforces the mandatory workflow the impeccable slop detector CANNOT see:
  *   - no reuse of the quarantined example section skeleton,

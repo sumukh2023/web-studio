@@ -24,7 +24,7 @@ const defaultLinks: NavLink[] = [
 ];
 
 export function Navbar({
-  brand = 'Webfinity',
+  brand = 'Web Studio',
   links = defaultLinks,
   cta = { label: 'Get started', href: '#cta' },
 }: NavbarProps) {
