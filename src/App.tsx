@@ -1,4 +1,4 @@
-// ⚠️ FROM-SCRATCH SHELL — Webfinity 2026.
+// ⚠️ FROM-SCRATCH SHELL — Web Studio.
 // Do NOT reuse examples/landing-demo/ as a page skeleton (that is the old
 // template slop). Build the page for THIS brief from scratch, composing the
 // primitives in src/components/ + src/components/motion/ per CLAUDE.md's
@@ -12,7 +12,7 @@ export default function App() {
       <main className="grid min-h-screen place-items-center p-8">
         <div className="max-w-md text-center">
           <p className="font-heading text-sm font-semibold uppercase tracking-widest text-primary">
-            Webfinity 2026
+            Web Studio
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">
             From-scratch shell

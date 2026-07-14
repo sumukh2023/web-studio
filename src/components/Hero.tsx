@@ -14,14 +14,14 @@ export interface HeroProps {
 }
 
 export function Hero({
-  badge = 'Webfinity 2026 Starter',
+  badge = 'Web Studio',
   title = (
     <>
       Ship <span className="text-gradient-brand">award-winning</span> sites
-      <br className="hidden sm:block" /> before the clock runs out.
+      <br className="hidden sm:block" /> on your very first try.
     </>
   ),
-  subtitle = 'A premium, reusable frontend foundation — animation system, component library, and design tokens — so competition day is pure design and build.',
+  subtitle = 'A premium, reusable frontend foundation — animation system, component library, and design tokens — so you can spend your time designing and building, not wiring up boilerplate.',
   primaryCta = { label: 'Explore components', href: '#features' },
   secondaryCta = { label: 'View the bento', href: '#bento' },
 }: HeroProps) {

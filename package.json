@@ -1,9 +1,9 @@
 {
-  "name": "webfinity-2026",
+  "name": "web-studio",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Premium reusable frontend starter for hackathons & design competitions.",
+  "description": "Premium, animated frontend starter for first-time web developers and vibe coders.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

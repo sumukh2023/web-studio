@@ -5,10 +5,13 @@ Follow it for all work in this repository.
 
 ## What this project is
 
-`webfinity-2026` is a **premium, reusable frontend starter** for design
-competitions and hackathons (theme announced on the day; ~2.5h to design + build,
-then present). The goal each event is to build a polished, ANIMATED site for the theme
-**from scratch, fast**, using this starter's vendored design tools and primitives.
+`web-studio` is a **premium, reusable frontend starter** built for first-time web
+developers and "vibe coders" who want to design and ship a polished, ANIMATED site
+fast, pairing with Claude Code instead of hand-rolling every primitive. It's just
+as capable for design competitions and hackathons (theme announced on the day;
+~2.5h to design + build, then present) — the workflow below is written to be
+approachable even if this is your first real build, using this starter's vendored
+design tools and primitives.
 The starter is a **toolkit + building blocks, NOT a page template to re-skin.**
 The old demo marketing page now lives in `examples/landing-demo/` as reference
 only (see Golden rule 1).
