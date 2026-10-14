@@ -1,16 +1,26 @@
-import { cn } from '@/utils/cn';
-import { useMotionValue, animate, motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import useMeasure from 'react-use-measure';
+import { cn } from '@/utils/cn';
 
 export type InfiniteSliderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   gap?: number;
   speed?: number;
   speedOnHover?: number;
   direction?: 'horizontal' | 'vertical';
   reverse?: boolean;
   className?: string;
+};
+
+type SliderStyle = CSSProperties & {
+  '--infinite-slider-duration': string;
 };
 
 export function InfiniteSlider({
@@ -22,91 +32,108 @@ export function InfiniteSlider({
   reverse = false,
   className,
 }: InfiniteSliderProps) {
-  const [isHovering, setIsHovering] = useState(false);
-  const currentSpeed = isHovering && speedOnHover ? speedOnHover : speed;
-  const [ref, { width, height }] = useMeasure();
-  const translation = useMotionValue(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [key, setKey] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [containerRef, container] = useMeasure();
+  const [unitRef, unit] = useMeasure();
+  const [groupRef, group] = useMeasure();
+  const [fontsReady, setFontsReady] = useState(false);
 
   useEffect(() => {
-    let controls;
-    const size = direction === 'horizontal' ? width : height;
-    const contentSize = size + gap;
-    const from = reverse ? -contentSize / 2 : 0;
-    const to = reverse ? 0 : -contentSize / 2;
+    let cancelled = false;
+    const fonts = document.fonts;
 
-    const distanceToTravel = Math.abs(to - from);
-    const duration = distanceToTravel / currentSpeed;
-
-    if (isTransitioning) {
-      const remainingDistance = Math.abs(translation.get() - to);
-      const transitionDuration = remainingDistance / currentSpeed;
-
-      controls = animate(translation, [translation.get(), to], {
-        ease: 'linear',
-        duration: transitionDuration,
-        onComplete: () => {
-          setIsTransitioning(false);
-          setKey((prevKey) => prevKey + 1);
-        },
-      });
-    } else {
-      controls = animate(translation, [from, to], {
-        ease: 'linear',
-        duration: duration,
-        repeat: Infinity,
-        repeatType: 'loop',
-        repeatDelay: 0,
-        onRepeat: () => {
-          translation.set(from);
-        },
-      });
+    if (!fonts) {
+      setFontsReady(true);
+      return;
     }
 
-    return controls?.stop;
-  }, [
-    key,
-    translation,
-    currentSpeed,
-    width,
-    height,
-    gap,
-    isTransitioning,
-    direction,
-    reverse,
-  ]);
+    void fonts.ready.then(() => {
+      if (!cancelled) setFontsReady(true);
+    });
 
-  const hoverProps = speedOnHover
-    ? {
-        onHoverStart: () => {
-          setIsTransitioning(true);
-          setIsHovering(true);
-        },
-        onHoverEnd: () => {
-          setIsTransitioning(true);
-          setIsHovering(false);
-        },
-      }
-    : {};
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  return (
-    <div className={cn('overflow-hidden', className)}>
-      <motion.div
-        className='flex w-max'
-        style={{
-          ...(direction === 'horizontal'
-            ? { x: translation }
-            : { y: translation }),
-          gap: `${gap}px`,
-          flexDirection: direction === 'horizontal' ? 'row' : 'column',
-        }}
-        ref={ref}
-        {...hoverProps}
+  const viewportSize =
+    direction === 'horizontal' ? container.width : container.height;
+  const unitSize = direction === 'horizontal' ? unit.width : unit.height;
+  const repetitions = unitSize
+    ? Math.max(1, Math.ceil((viewportSize + gap) / (unitSize + gap)))
+    : 1;
+  const loopDistance = direction === 'horizontal' ? group.width : group.height;
+  const duration = loopDistance > 0 && speed > 0 ? loopDistance / speed : 1;
+  const ready = fontsReady && loopDistance > 0 && speed > 0;
+
+  const setPlaybackRate = useCallback((rate: number) => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches)
+      return;
+
+    for (const animation of trackRef.current?.getAnimations() ?? []) {
+      animation.updatePlaybackRate(rate);
+    }
+  }, []);
+
+  const hoverProps =
+    speedOnHover && speedOnHover > 0 && speed > 0
+      ? {
+          onPointerEnter: () => setPlaybackRate(speedOnHover / speed),
+          onPointerLeave: () => setPlaybackRate(1),
+        }
+      : {};
+
+  const trackStyle: SliderStyle = {
+    '--infinite-slider-duration': `${duration}s`,
+    animationDirection: reverse ? 'reverse' : 'normal',
+    animationPlayState: ready ? 'running' : 'paused',
+    flexDirection: direction === 'horizontal' ? 'row' : 'column',
+  };
+  const groupStyle: CSSProperties = {
+    gap: `${gap}px`,
+    flexDirection: direction === 'horizontal' ? 'row' : 'column',
+    ...(direction === 'horizontal'
+      ? { paddingRight: `${gap}px` }
+      : { paddingBottom: `${gap}px` }),
+  };
+  const unitStyle: CSSProperties = {
+    gap: `${gap}px`,
+    flexDirection: direction === 'horizontal' ? 'row' : 'column',
+  };
+
+  const groupContent = (duplicate: boolean) =>
+    Array.from({ length: repetitions }, (_, index) => (
+      <div
+        key={index}
+        ref={!duplicate && index === 0 ? unitRef : undefined}
+        aria-hidden={duplicate || index > 0 ? true : undefined}
+        className="flex shrink-0"
+        style={unitStyle}
       >
         {children}
-        {children}
-      </motion.div>
+      </div>
+    ));
+
+  return (
+    <div ref={containerRef} className={cn('overflow-hidden', className)}>
+      <div
+        ref={trackRef}
+        className={cn(
+          'flex w-max will-change-transform motion-reduce:transform-none motion-reduce:animate-none',
+          direction === 'horizontal'
+            ? 'animate-infinite-slider-x'
+            : 'animate-infinite-slider-y'
+        )}
+        style={trackStyle}
+        {...hoverProps}
+      >
+        <div ref={groupRef} className="flex shrink-0" style={groupStyle}>
+          {groupContent(false)}
+        </div>
+        <div aria-hidden="true" className="flex shrink-0" style={groupStyle}>
+          {groupContent(true)}
+        </div>
+      </div>
     </div>
   );
 }

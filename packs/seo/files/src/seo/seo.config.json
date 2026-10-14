@@ -1,0 +1,22 @@
+{
+  "origin": "https://example.com",
+  "siteName": "Web Studio",
+  "titleSeparator": " | ",
+  "locale": "en_US",
+  "socialImage": {
+    "path": "/og-image.jpg",
+    "width": 1200,
+    "height": 630,
+    "alt": "Web Studio"
+  },
+  "twitterHandle": "",
+  "privatePrefixes": ["/admin", "/account", "/api"],
+  "routes": [
+    {
+      "path": "/",
+      "title": "",
+      "description": "One sentence a stranger reads in a search result: what this is, for whom, and why now. Under 160 characters.",
+      "sources": ["src/App.tsx"]
+    }
+  ]
+}

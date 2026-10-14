@@ -1,4 +1,14 @@
-// This code comes from https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/usePreventScroll.ts
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Derived from @react-aria/overlays usePreventScroll
+ * (https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/usePreventScroll.ts),
+ * via ibelick/motion-primitives. Modified: trimmed to the parts the vendored
+ * motion components use.
+ */
 
 import { useEffect, useLayoutEffect } from 'react';
 

@@ -1,0 +1,20 @@
+{
+  "name": "images",
+  "title": "Image pipeline (AVIF/WebP) + favicons",
+  "summary": "Automatic AVIF/WebP variants of every photo in public/, a `Picture` drop-in for `img`, and a full favicon/app-icon set from one source.",
+  "when": "The site shows photographs (a gallery, a hero image, team portraits) or needs proper icons for tabs, iOS and Android home screens.",
+  "devDependencies": { "sharp": "0.35.4" },
+  "chainScripts": {
+    "predev": "node scripts/encode-images.mjs",
+    "prebuild": "node scripts/encode-images.mjs"
+  },
+  "scripts": {
+    "images:encode": "node scripts/encode-images.mjs",
+    "favicons": "node scripts/make-favicons.mjs"
+  },
+  "gitignore": ["public/_optimized/", "src/generated/image-variants.json"],
+  "next": [
+    "Put photos in public/ and render them with <Picture src=\"/photo.jpg\" alt=\"…\" width={…} height={…} /> (import from @/components/Picture).",
+    "Make icons: npm run favicons -- path/to/logo.svg --background \"#hex\" --name \"Site name\", then paste the printed <link> tags into index.html."
+  ]
+}

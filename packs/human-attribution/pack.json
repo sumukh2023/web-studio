@@ -1,0 +1,21 @@
+{
+  "name": "human-attribution",
+  "title": "Human-only commit attribution",
+  "summary": "Commits carry the responsible human's identity only: hooks and CI reject AI-tool/bot authors, co-author trailers and session links, and Claude Code's auto-attribution is switched off.",
+  "when": "Your team or client policy says AI tools are tools, not contributors (common for coursework, competitions and client repos).",
+  "inject": [
+    {
+      "file": ".githooks/pre-push",
+      "marker": "packs:pre-push",
+      "lines": [
+        "if ! python3 scripts/check-attribution.py pre-push; then",
+        "  exit 1",
+        "fi"
+      ]
+    }
+  ],
+  "next": [
+    "Set your own identity: git config user.name \"Your Name\" && git config user.email you@example.com",
+    "Hooks run from .githooks (npm install sets core.hooksPath). Do not bypass with --no-verify."
+  ]
+}

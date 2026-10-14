@@ -1,5 +1,6 @@
 #!/bin/sh
 # Two-layer gate. See CLAUDE.md. Emergency bypass: git push --no-verify
+# packs:pre-push (starter packs add checks below this line)
 echo "» impeccable: scanning src/ for UI anti-patterns…"
 if ! npx --yes impeccable@2.3.2 detect src/; then
   echo "\n✗ Push blocked: fix the anti-patterns above."

@@ -19,6 +19,25 @@ export const DURATION = {
   slow: 0.9,
 } as const;
 
+/**
+ * Viewport rule for every scroll reveal on the site.
+ *
+ * `once`: a section animates in the first time it is reached and then stays
+ * put. Replaying the entrance on the way back up was tried and reverted — a
+ * page the reader has already seen should not keep re-introducing itself.
+ *
+ * `amount` rather than `margin`: a fraction of the element is a symmetric,
+ * predictable threshold, where an asymmetric margin like '-15% 0px' fires at
+ * different points depending on travel direction.
+ */
+export const REVEAL_VIEWPORT = { once: true, amount: 0.25 } as const;
+
+/** Transition for those reveals. */
+export const REVEAL_TRANSITION: Transition = {
+  duration: DURATION.slow,
+  ease: EASE.inOut,
+};
+
 export const springSoft: Transition = {
   type: 'spring',
   stiffness: 120,

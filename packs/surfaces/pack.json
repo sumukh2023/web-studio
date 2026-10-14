@@ -1,0 +1,11 @@
+{
+  "name": "surfaces",
+  "title": "Depth utilities (+ opt-in glass)",
+  "summary": "depth-card, depth-inset and depth-band: static, token-driven elevation that survives focus rings and prints flat. Plus an opt-in, budget-aware .glass.",
+  "when": "Flat cards feel lifeless and the design wants physical depth without heavy shadows or blur. Glass only when the brief explicitly calls for it.",
+  "appendCss": "surfaces.css",
+  "next": [
+    "Add depth-card to framed content (photos, offers), depth-inset to inputs, depth-band to full-width sections.",
+    ".glass is on the anti-slop ban list by default: use it only if the brief needs it, and say why in .design/brief.md."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "india",
+  "title": "Indian formats (₹, mobiles, PAN, GSTIN, IFSC, UPI)",
+  "summary": "One shared module for Indian mobile normalisation, rupee formatting (lakh/crore), and PAN/GSTIN/IFSC/PIN/UPI validation, usable from the browser and api/.",
+  "when": "The site serves Indian visitors: prices in rupees, mobile numbers, invoices, donations (80G/PAN), vendor sign-ups (GSTIN/IFSC).",
+  "next": [
+    "Import from @/lib/india in the browser and from '../src/lib/india' in api/ routes: one copy of every rule."
+  ]
+}

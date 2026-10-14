@@ -1,6 +1,14 @@
 import { ReactNode } from 'react';
 import { motion, Variants } from 'framer-motion';
+import { readDeviceTier } from '@/hooks/useDeviceTier';
 import React from 'react';
+
+/* The same rule the text effect follows, for the same reason: a filter is
+   re-rastered on every frame it changes where opacity and transform are handed
+   to the compositor, so the blur is dropped on the devices that cannot spare
+   it and the movement is kept. See the long note in `text-effect.tsx`. */
+const BLUR_OK = readDeviceTier() === 'full';
+const blurred = (radius: string) => (BLUR_OK ? { filter: `blur(${radius})` } : {});
 
 export type PresetType =
   | 'fade'
@@ -50,12 +58,12 @@ const presetVariants: Record<PresetType, Variants> = {
     visible: { scale: 1 },
   },
   blur: {
-    hidden: { filter: 'blur(4px)' },
-    visible: { filter: 'blur(0px)' },
+    hidden: { ...blurred('4px') },
+    visible: { ...blurred('0px') },
   },
   'blur-slide': {
-    hidden: { filter: 'blur(4px)', y: 20 },
-    visible: { filter: 'blur(0px)', y: 0 },
+    hidden: { ...blurred('4px'), y: 20 },
+    visible: { ...blurred('0px'), y: 0 },
   },
   zoom: {
     hidden: { scale: 0.5 },

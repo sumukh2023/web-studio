@@ -1,0 +1,25 @@
+{
+  "name": "email",
+  "title": "Transactional email (Resend)",
+  "summary": "Send confirmations and internal notifications through Resend, with retries, idempotency and a safe HTML shell.",
+  "when": "A form or booking should email the visitor a confirmation, or email you a copy.",
+  "requires": ["api"],
+  "env": [
+    "# Server-side only. Without these, sendMail() returns { sent: false, reason: 'unconfigured' }",
+    "# and the route carries on: store first, mail second, never lose the row.",
+    "# RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx",
+    "# The ONLY place the sender is written. Must be a domain verified in Resend.",
+    "# Use a subdomain (mail.example.com) so transactional reputation stays apart from staff mail.",
+    "# RESEND_FROM=\"Your Site <noreply@mail.example.com>\"",
+    "# Where a visitor's reply goes (the sender is a noreply mailbox).",
+    "# SUPPORT_REPLY_TO=hello@example.com",
+    "# Where internal copies (new enquiry, new booking) are sent.",
+    "# ADMIN_RECIPIENT=hello@example.com",
+    "# Absolute origin for links inside mail (falls back to Vercel's production URL).",
+    "# SITE_ORIGIN=https://example.com"
+  ],
+  "next": [
+    "Verify a sending domain in Resend, then set RESEND_API_KEY and RESEND_FROM (local .env and Vercel).",
+    "Set BRAND colours/name at the top of api/_email.ts from your palette (mail clients cannot read CSS variables)."
+  ]
+}

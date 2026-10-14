@@ -1,0 +1,14 @@
+{
+  "name": "router",
+  "title": "Multi-page routing",
+  "summary": "React Router with lazy pages, correct scroll on every navigation (top, #hash, Back restores), a 404 page and the Vercel SPA rewrite.",
+  "when": "The brief needs more than one page (about, work, pricing, legal, a form on its own URL). A single long page does not need it.",
+  "dependencies": { "react-router-dom": "^7.18.2" },
+  "vercel": {
+    "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+  },
+  "next": [
+    "Replace your App's body with <BrowserRouter><ScrollManager /><Routes>…</Routes></BrowserRouter>; see packs/router/README.md for the full snippet.",
+    "Use <Link> for internal links and followSectionLink (utils/page-scroll) for same-page #section links."
+  ]
+}

@@ -1,0 +1,54 @@
+name: CI
+
+# The correctness gate, alongside the taste gates in slop-check.yml.
+# Merging to `main` auto-deploys on Vercel, so without this the first thing to
+# notice a type error or a broken build is the production deployment. These
+# are the same checks CLAUDE.md golden rule 6 asks for before a PR.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    name: typecheck · lint · build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      # Also runs any build hooks packs add (image encoding, prerender,
+      # sitemap), which is where a render-time crash surfaces.
+      - name: Build
+        run: npm run build
+      # Every installed starter pack is checked for drift against packs/
+      # (files deleted or renamed out from under the pack's manifest).
+      - name: Starter packs
+        run: npm run pack:doctor
+
+  packs:
+    name: starter packs install + pass every gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      # Installs ALL packs together into a throwaway copy, then runs
+      # typecheck, lint, build (incl. prerender), design gate, slop check and
+      # doctor there. A pack that breaks the build fails here, not in
+      # somebody's first session.
+      - name: Every pack, together
+        run: npm run pack:test
