@@ -209,6 +209,13 @@ dependencies, pulls in required packs, and prints what is left for you to do
 | Utilities  | clsx · tailwind-merge · class-variance-authority          |
 | Quality    | ESLint (flat config) · Prettier + tailwind plugin         |
 
+## Credits
+
+Built on open-source work by ibelick (Motion Primitives), shadcn (shadcn/ui),
+Adobe (React Aria), Next Level Builder (ui-ux-pro-max), Paul Bakaus
+(impeccable), Leonxlnx (taste-skill), Emil Kowalski (animation skills) and
+David Haz (React Bits, via registry). Full list with licences: [CREDITS.md](CREDITS.md).
+
 ## Deployment
 
 Vercel-ready out of the box. Import the repo, accept defaults (build `npm run build`,
