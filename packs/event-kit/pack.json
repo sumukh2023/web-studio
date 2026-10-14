@@ -1,0 +1,38 @@
+{
+  "name": "event-kit",
+  "title": "Event kit (countdown, add to calendar, .ics)",
+  "summary": "A timezone-correct live countdown, a per-device Add to Calendar button, and a generated RFC 5545 .ics file, all from one event.json.",
+  "when": "The site is for something that happens on a date: a fest, a launch, a hackathon, a wedding, a conference.",
+  "chainScripts": {
+    "prebuild": "node scripts/make-ics.mjs"
+  },
+  "scripts": {
+    "event:ics": "node scripts/make-ics.mjs"
+  },
+  "vercel": {
+    "headers": [
+      {
+        "source": "/(.*)\\.ics",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/calendar; charset=utf-8"
+          },
+          {
+            "key": "Content-Disposition",
+            "value": "inline"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
+        ]
+      }
+    ]
+  },
+  "next": [
+    "Fill in src/event/event.json (ISO times WITH the event's UTC offset, e.g. +05:30, never Z).",
+    "Run npm run event:ics once (it also runs before every build) and commit public/event.ics.",
+    "Render <Countdown /> and <AddToCalendar /> where the brief needs them."
+  ]
+}

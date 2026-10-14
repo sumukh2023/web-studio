@@ -1,0 +1,35 @@
+{
+  "name": "analytics",
+  "title": "Analytics + real-user performance (Vercel)",
+  "summary": "Cookieless page views and Core Web Vitals from real visitors, with token-bearing URLs scrubbed before they leave the page.",
+  "when": "You want to know how many people visit, which pages, and how fast the site really is on their devices.",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0"
+  },
+  "inject": [
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:imports",
+      "lines": [
+        "import { Telemetry } from '@/telemetry/Telemetry';"
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:wrap",
+      "lines": [
+        "providers.push((app) => (",
+        "  <>",
+        "    {app}",
+        "    <Telemetry />",
+        "  </>",
+        "));"
+      ]
+    }
+  ],
+  "next": [
+    "Enable Web Analytics and Speed Insights in the Vercel project dashboard.",
+    "If any route carries a secret in its path, add it to TOKEN_ROUTES in src/telemetry/scrub.ts."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "live-updates",
+  "title": "Live announcements (Supabase Realtime)",
+  "summary": "Post an announcement in Supabase and every open browser shows it within a second, with an unread badge and a polling fallback.",
+  "when": "Event-day or launch-day news: schedule changes, gates opening, a sold-out notice, an emergency message.",
+  "requires": [
+    "api",
+    "supabase"
+  ],
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.2"
+  },
+  "env": [
+    "# Optional, browser-side and safe to expose: RLS limits the anon key to",
+    "# PUBLISHED updates. Without these the panel polls /api/updates instead.",
+    "VITE_SUPABASE_URL=https://YOUR-PROJECT-ref.supabase.co",
+    "VITE_SUPABASE_ANON_KEY=your-anon-key"
+  ],
+  "next": [
+    "Apply supabase/migrations/*_live_updates.sql (it enables RLS and adds the table to the realtime publication).",
+    "Render <LiveUpdates /> once (e.g. next to your footer), or build your own UI on useLiveUpdates().",
+    "Publish: insert a row with published = true, published_at = now()."
+  ]
+}

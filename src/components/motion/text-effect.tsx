@@ -1,4 +1,5 @@
 import { cn } from '@/utils/cn';
+import { readDeviceTier } from '@/hooks/useDeviceTier';
 import {
   AnimatePresence,
   motion
@@ -64,6 +65,30 @@ const defaultItemVariants: Variants = {
   exit: { opacity: 0 },
 };
 
+/* -------------------------------------------------------------------- *
+ *  THE BLUR IS OPTIONAL, AND ON A PHONE IT IS OFF.
+ *
+ *  This component splits its text and animates every PIECE of it — with
+ *  `per="word"` on a heading that is a dozen elements, and a landing page
+ *  easily carries twenty at once. Opacity and transform are compositor
+ *  properties and cost nothing per frame; `filter` is not, and forces each
+ *  run to be re-rasterised on every frame it changes. Twenty text runs
+ *  re-rastered per frame, next to a decoding video and a smooth-scroll loop,
+ *  is the stutter that gets reported as "not smooth on my phone".
+ *
+ *  So the blur is treated as the garnish it is. The movement and the fade —
+ *  the parts that carry the intent — run everywhere; the blur runs where it
+ *  is free. `readDeviceTier()` (hooks/useDeviceTier.ts) is the one probe
+ *  every effect asks, so a device gets one consistent answer about what it
+ *  can afford.
+ *
+ *  Read at module scope, deliberately: these variants are static objects and
+ *  the tier cannot change within a session, so paying for a hook and a
+ *  re-render per instance would cost more than the branch saves.
+ * -------------------------------------------------------------------- */
+const BLUR_OK = readDeviceTier() === 'full';
+const blurred = (radius: string) => (BLUR_OK ? { filter: `blur(${radius})` } : {});
+
 const presetVariants: Record<
   PresetType,
   { container: Variants; item: Variants }
@@ -71,17 +96,17 @@ const presetVariants: Record<
   blur: {
     container: defaultContainerVariants,
     item: {
-      hidden: { opacity: 0, filter: 'blur(12px)' },
-      visible: { opacity: 1, filter: 'blur(0px)' },
-      exit: { opacity: 0, filter: 'blur(12px)' },
+      hidden: { opacity: 0, ...blurred('12px') },
+      visible: { opacity: 1, ...blurred('0px') },
+      exit: { opacity: 0, ...blurred('12px') },
     },
   },
   'fade-in-blur': {
     container: defaultContainerVariants,
     item: {
-      hidden: { opacity: 0, y: 20, filter: 'blur(12px)' },
-      visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
-      exit: { opacity: 0, y: 20, filter: 'blur(12px)' },
+      hidden: { opacity: 0, y: 20, ...blurred('12px') },
+      visible: { opacity: 1, y: 0, ...blurred('0px') },
+      exit: { opacity: 0, y: 20, ...blurred('12px') },
     },
   },
   scale: {
@@ -116,8 +141,36 @@ const AnimationComponent: React.FC<{
   per: 'line' | 'word' | 'char';
   segmentWrapperClassName?: string;
 }> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
-  const content =
-    per === 'line' ? (
+  /**
+   * A SEGMENT THAT IS ONLY WHITESPACE MUST NOT BE AN `inline-block`.
+   *
+   * LOCAL MODIFICATION to the vendored component (upstream still has the bug).
+   * `splitText` splits on `/(\s+)/`, so every gap between words becomes its own
+   * segment. Rendered with `inline-block whitespace-pre` that gap is an ATOMIC
+   * BOX: `pre` stops it collapsing and `inline-block` stops the line breaking
+   * inside it, so when a line happens to wrap at that gap the space is carried
+   * onto the next line and PAINTED there. Measured on a centred statement at
+   * 390px: one wrapped row began 7.5px right of every other row, the exact
+   * width of the carried space.
+   *
+   * As a plain inline span the space is ordinary collapsible whitespace in the
+   * parent's inline formatting context: one space between words, and nothing at
+   * all at a line end, which is what every other piece of text on the page does.
+   *
+   * IT IS STILL A `motion.span` WITH THE SAME `variants`, deliberately. The
+   * container staggers its animated CHILDREN, so dropping these from the tree
+   * would renumber every stagger index and make each heading on the site
+   * animate about twice as fast — a site-wide motion change nobody asked for.
+   * Keeping the element and changing only its display keeps every existing
+   * timing byte-identical while the wrapping is fixed.
+   */
+  const isGap = per !== 'line' && /^\s+$/.test(segment);
+
+  const content = isGap ? (
+    <motion.span aria-hidden='true' variants={variants}>
+      {segment}
+    </motion.span>
+  ) : per === 'line' ? (
       <motion.span variants={variants} className='block'>
         {segment}
       </motion.span>

@@ -1,0 +1,85 @@
+/* Depth borrows the theme's own ink and paper, never another brand colour. */
+:root {
+  --depth-ink: var(--foreground);
+  --depth-light: var(--card);
+}
+.dark {
+  --depth-ink: var(--background);
+  --depth-light: var(--foreground);
+}
+
+@layer utilities {
+  /* OPT-IN DEPTH, NOT EVERY RECTANGLE. Framed content only: photos, offers,
+     summary cards. A top light, a tight contact shadow and a soft falloff,
+     composed through Tailwind's shadow variables so focus rings survive.
+     Static: no blur, no filter, no animation, so it costs nothing to scroll. */
+  .depth-card {
+    --tw-shadow:
+      inset 0 1px 0 hsl(var(--depth-light) / 0.55),
+      0 2px 6px hsl(var(--depth-ink) / 0.08),
+      0 20px 42px -22px hsl(var(--depth-ink) / 0.22);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 transparent),
+      var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
+  }
+
+  /* A recessed control surface, for inputs (not their labels). */
+  .depth-inset {
+    --tw-shadow:
+      inset 0 2px 5px hsl(var(--depth-ink) / 0.12),
+      inset 0 -1px 0 hsl(var(--depth-light) / 0.12);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 transparent),
+      var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
+  }
+
+  /* Full-width bands are planes, not giant floating cards: a light top edge
+     and a recessed foot, never a shadow cast over the next section. */
+  .depth-band {
+    box-shadow:
+      inset 0 1px 0 hsl(var(--depth-light) / 0.5),
+      inset 0 -14px 22px -22px hsl(var(--depth-ink) / 0.2);
+  }
+}
+
+@media print {
+  .depth-card,
+  .depth-inset,
+  .depth-band,
+  .glass {
+    box-shadow: none !important;
+  }
+}
+
+/* GLASS: OPT-IN ONLY. Glassmorphism is on the anti-slop default ban list
+   (CLAUDE.md, golden rule 3). Use it only when the brief genuinely calls for
+   a floating surface over imagery or video, and record why in
+   .design/brief.md.
+
+   Costs, measured: a FIXED element with backdrop-filter
+   makes the compositor re-sample everything behind it on every scrolled
+   frame. So: the blur is small by default and only grows where the motion
+   budget is rich, the element gets its own layer, and reduced transparency
+   gets a solid surface. */
+.glass {
+  position: relative;
+  background: hsl(var(--background) / 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transform: translateZ(0);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--depth-light) / 0.16),
+    0 2px 6px hsl(var(--depth-ink) / 0.2),
+    0 18px 42px -22px hsl(var(--depth-ink) / 0.38);
+}
+html[data-motion='full'] .glass {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: hsl(var(--background) / 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

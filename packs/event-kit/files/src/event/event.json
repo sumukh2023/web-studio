@@ -1,0 +1,11 @@
+{
+  "name": "Your Event 2026",
+  "start": "2026-11-14T10:00:00+05:30",
+  "end": "2026-11-14T19:00:00+05:30",
+  "timeZone": "Asia/Kolkata",
+  "location": "Venue name, Street, City PIN",
+  "description": "One or two sentences: what happens, for whom. Ends with the link to act on.",
+  "url": "https://example.com/",
+  "calendarFile": "/event.ics",
+  "uid": "your-event-2026@example.com"
+}

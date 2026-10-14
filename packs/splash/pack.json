@@ -1,0 +1,84 @@
+{
+  "name": "splash",
+  "title": "First-paint splash screen",
+  "summary": "A branded loading screen that paints before JavaScript, never flashes on a cached visit, and can never block clicks.",
+  "when": "The landing page is heavy (video, big bundle) and a cold first visit shows a blank screen for a noticeable moment.",
+  "inject": [
+    {
+      "file": "index.html",
+      "marker": "packs:head",
+      "lines": [
+        "<style>",
+        "  /* splash pack: paints before any JavaScript, removed by src/main.tsx",
+        "     after React's first paint. Starts invisible and fades in after 240ms,",
+        "     so a cached repeat visit (React mounted well before that) never sees",
+        "     it at all: the delay IS the cache test. Token fallbacks cover dev,",
+        "     where the stylesheet arrives with the JS. */",
+        "  #splash {",
+        "    position: fixed;",
+        "    inset: 0;",
+        "    z-index: 9999;",
+        "    display: flex;",
+        "    align-items: center;",
+        "    justify-content: center;",
+        "    background: hsl(var(--background, 240 10% 4%));",
+        "    opacity: 0;",
+        "    animation: splash-in 0.2s ease-out 0.24s forwards;",
+        "    /* aria-hidden and covering everything: it must never catch a press,",
+        "       or a splash that failed to leave makes the page unclickable. */",
+        "    pointer-events: none;",
+        "  }",
+        "  #splash p {",
+        "    margin: 0;",
+        "    font: 600 0.75rem/1 ui-sans-serif, system-ui, sans-serif;",
+        "    letter-spacing: 0.22em;",
+        "    text-transform: uppercase;",
+        "    color: hsl(var(--foreground, 0 0% 98%));",
+        "    animation: splash-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;",
+        "  }",
+        "  #splash[data-leaving] { animation: splash-out 0.28s ease-in forwards; }",
+        "  @keyframes splash-in { to { opacity: 1; } }",
+        "  @keyframes splash-out { to { opacity: 0; } }",
+        "  @keyframes splash-pulse { 50% { opacity: 0.5; } }",
+        "  @media (prefers-reduced-motion: reduce) {",
+        "    #splash, #splash p, #splash[data-leaving] { animation: none; }",
+        "    #splash { opacity: 1; }",
+        "    #splash[data-leaving] { opacity: 0; }",
+        "  }",
+        "</style>"
+      ]
+    },
+    {
+      "file": "index.html",
+      "marker": "packs:body",
+      "lines": [
+        "<div id=\"splash\" aria-hidden=\"true\"><p>Web Studio</p></div>"
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:boot",
+      "lines": [
+        "/* splash pack: take the loading screen down once React has painted.",
+        "   Two frames: the first runs after React's commit, the second after the",
+        "   browser PAINTED it (removing on the first can flash white on a slow",
+        "   device). rAF never runs in a background tab, so a timer clears a hidden",
+        "   tab's splash; a visible tab has painted by then and finds nothing left. */",
+        "const clearSplash = () => document.getElementById('splash')?.remove();",
+        "window.setTimeout(() => document.hidden && clearSplash(), 1000);",
+        "requestAnimationFrame(() =>",
+        "  requestAnimationFrame(() => {",
+        "    const splash = document.getElementById('splash');",
+        "    if (!splash) return;",
+        "    splash.dataset.leaving = '';",
+        "    splash.addEventListener('animationend', clearSplash, { once: true });",
+        "    window.setTimeout(clearSplash, 400);",
+        "  })",
+        ");"
+      ]
+    }
+  ],
+  "next": [
+    "Change the splash text in index.html (#splash p) to your site's name or wordmark."
+  ]
+}

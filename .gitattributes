@@ -1,1 +1,5 @@
 * text=auto eol=lf
+
+# iCalendar requires CRLF line endings (RFC 5545), and iOS Calendar is
+# strict about the format. Stored byte for byte, never normalised to LF.
+*.ics -text

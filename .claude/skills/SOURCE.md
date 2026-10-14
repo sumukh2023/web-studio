@@ -48,3 +48,10 @@ a manual motion-quality gate (disable-model-invocation). Update by re-copying up
 
 Note: animated UI components from ibelick/motion-primitives (MIT) are vendored
 separately under src/components/motion/ (components, not skills).
+
+## starter-packs (this repo's own)
+
+`.claude/skills/starter-packs/` is not vendored: it is written for this
+starter and documents the opt-in feature packs in `packs/` (when to install
+which, and the rules that come with them). Update it whenever a pack is added
+or its behaviour changes; `npm run pack:test` proves the packs themselves.

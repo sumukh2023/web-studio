@@ -166,3 +166,15 @@
     );
   }
 }
+
+/* FAQ answers stay mounted (so find-in-page, prerendered HTML and crawlers
+   can read them) and animate their measured height instead.
+   WebKit paints layout-changing transitions at a lower cadence than Chromium,
+   so its reading of `ease-out` advances too far before the first painted
+   frame. This capability query softens only WebKit's first interval and
+   keeps the same 250ms; Chromium keeps the original easing. */
+@supports (-webkit-hyphens: none) {
+  .faq-content[data-state='open'] {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

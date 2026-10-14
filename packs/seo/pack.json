@@ -1,0 +1,19 @@
+{
+  "name": "seo",
+  "title": "SEO, link previews and prerendering",
+  "summary": "Per-route title/description/canonical/Open Graph/JSON-LD from one config, build-time prerender of every public route, sitemap.xml, robots.txt and a 404.html.",
+  "when": "The site will be shared (WhatsApp, Slack, LinkedIn previews) or should be found on Google. Almost always, for a real launch.",
+  "requires": ["router"],
+  "devDependencies": { "jsdom": "^26.1.0" },
+  "chainScripts": {
+    "postbuild": "vite build --config vite.prerender.config.mjs --logLevel warn && node scripts/prerender.mjs && node scripts/build-sitemap.mjs"
+  },
+  "scripts": { "seo:check": "node scripts/seo-check.mjs" },
+  "gitignore": ["dist-prerender"],
+  "next": [
+    "Fill in src/seo/seo.config.json: origin, siteName, socialImage, and one entry per public route.",
+    "Render <Seo /> once inside <BrowserRouter> (next to <ScrollManager />).",
+    "Put a 1200x630 social image at public/<socialImage.path>.",
+    "After `npm run build`, run `npm run seo:check`."
+  ]
+}

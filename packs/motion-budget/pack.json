@@ -1,0 +1,27 @@
+{
+  "name": "motion-budget",
+  "title": "Motion budget (still / lite / full)",
+  "summary": "Decides once how much motion a device can afford, exposes it to JS (useMotionBudget) and CSS (rich:/lite:/still: variants).",
+  "when": "The site has expensive optional effects (parallax, blur, cursor spotlights, video, continuous loops) that must not make a budget phone stutter.",
+  "inject": [
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:imports",
+      "lines": [
+        "import { MotionBudgetProvider } from '@/motion/MotionBudgetProvider';"
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:wrap",
+      "lines": [
+        "providers.push((app) => <MotionBudgetProvider>{app}</MotionBudgetProvider>);"
+      ]
+    }
+  ],
+  "next": [
+    "Gate expensive effects: const { rich, animated } = useMotionBudget(); render the spotlight only when rich.",
+    "Gate expensive CSS: className=\"bg-card rich:backdrop-blur-xl\".",
+    "Look at each level with ?motion=still, ?motion=lite, ?motion=full."
+  ]
+}

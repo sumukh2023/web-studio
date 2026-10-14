@@ -60,6 +60,12 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
    spacing, responsiveness, accessibility (semantic HTML, focus states,
    reduced-motion), and performant, meaningful animation.
 8. **Work on a branch and open a PR.** Never commit straight to `main`.
+9. **Install a starter pack instead of hand-writing infrastructure.** Routing,
+   SEO/prerender, forms that really send, a database, auth, payments, images,
+   analytics, security headers, countdowns, galleries: if the brief needs it,
+   read `.claude/skills/starter-packs/SKILL.md` and `npm run pack:add` it. The
+   packs carry fixes for bugs a fresh implementation will re-learn. They are
+   infrastructure, not design: rules 1 to 5 still decide how the page looks.
 
 ## Where things live
 
@@ -95,17 +101,68 @@ design tokens · Framer Motion + GSAP + Lenis · shadcn/ui (Radix) · lucide-rea
   sentinel). Replace it entirely; build the page for the brief from scratch.
 - `.design/brief.md` — record the ui-ux-pro-max result here (Golden rule 2);
   `scripts/verify-design-process.mjs` requires it once you leave the shell.
-- `src/hooks/` — `useLenis`, `useScrollProgress`, `useMediaQuery`, `useMousePosition`.
+- `src/hooks/` — `useLenis`, `useScrollProgress`, `useMediaQuery`, `useMousePosition`,
+  `useDeviceTier` (one answer to "can this device afford blur?"), `useDialog`
+  (Escape, focus trap/return, inert background, scroll lock for any overlay).
+- `src/utils/page-scroll.ts` — the single owner of page scroll: Lenis registers
+  with it, overlays lock through it, routes and `#section` links move through it.
+  Never call `window.scrollTo` or pin `body` yourself; Lenis will overrule you.
+- `src/main.tsx` — carries `packs:imports` / `packs:boot` / `packs:wrap` markers
+  (and `index.html` carries `packs:head` / `packs:body`). Starter packs install
+  into them; keep them.
+- `packs/` — **starter packs**: opt-in features installed with
+  `npm run pack:add -- <name>`. See the section below.
 - `.claude/skills/` — vendored design skills: **`ui-ux-pro-max`** (design
   database: styles, palettes, font pairings, UX rules — query it first, Golden
   rule 3); the anti-slop frameworks **`impeccable`** (detector + 23 commands)
   and **`taste-skill`** (+ `redesign`/`minimalist`/`soft`/`brutalist`/`output`),
-  Golden rule 4; and `ui-styling` + `design-system` for shadcn/Tailwind/token
-  guidance. See `.claude/skills/SOURCE.md`.
-- `README.md` — full component + theming docs. `DAYOF.md` — competition playbook.
+  Golden rule 4; `ui-styling` + `design-system` for shadcn/Tailwind/token
+  guidance; and this repo's own **`starter-packs`** (which pack when, golden
+  rule 9). See `.claude/skills/SOURCE.md`.
+- `README.md` — full component + theming docs.
+- `AGENTS.md` — a short pointer back to THIS file for Codex and other tools
+  (deliberately not a second copy: two rulebooks drift). `.codex/config.toml`
+  registers the Playwright MCP; `.claude/launch.json` the dev/preview servers.
 
 Everything is re-exported via barrels: `@/components`, `@/components/animations`,
 `@/hooks`. The `@/` alias maps to `src/`.
+
+## Starter packs (opt-in production features)
+
+The core is a design toolkit. Everything else a real launch needs lives in
+`packs/<name>/` until a build asks for it. The packs are already debugged and
+hardened against real traffic. **Read
+`.claude/skills/starter-packs/SKILL.md` (the which-pack-when table) as soon as
+the brief needs more than a static page.**
+
+```bash
+npm run pack:list                # what exists / what is installed
+npm run pack:info -- seo         # what a pack adds
+npm run pack:add -- router seo   # install (+ requirements), npm install, wire-up steps
+npm run pack:doctor              # installed packs intact? manifests valid?
+npm run pack:test                # maintainers: every pack in a throwaway copy, all gates
+```
+
+`pack:add` copies files, merges `package.json`/`vercel.json`/`.env.example`/
+`.gitignore`, injects at the markers, records `packs.lock.json`, and prints the
+steps only a human can do (env vars, migrations, a verified email domain).
+Relay those to the user; do not claim them done. Then read the pack's
+`README.md` and run the gates.
+
+Packs: `router`, `seo`, `images`, `gallery`, `forms`, `api`, `supabase`,
+`email`, `auth`, `feature-flags`, `event-kit`, `payments-upi`, `india`,
+`live-updates`, `motion-budget`, `splash`, `security-headers`, `analytics`,
+`fonts`, `surfaces`, `qa`, `human-attribution`.
+
+Two standing rules come with the backend packs and apply whenever they are in:
+
+- **The server is the authority.** Validate, price and authorise in `api/`;
+  browser checks are a convenience. Only public values may be `VITE_*`.
+- **Database changes are new forward migrations built from the LIVE state.**
+  Never rebuild a production function from an older migration file: a file in
+  `supabase/migrations/` does not mean it was applied, and plpgsql resolves a
+  function body only when it runs, so a broken rebuild "succeeds" and fails in
+  production. Read `packs/supabase/README.md`, "The standing rule".
 
 ## Design intelligence database (ui-ux-pro-max)
 
@@ -158,7 +215,9 @@ automatically in any Claude Code session (local or cloud) on this repo:
 **The enforced website workflow (all three tools):**
 1. `ui-ux-pro-max` query → get the style, palette, and font pairing (Golden rule 3).
 2. `taste-skill` → confirm the direction fits the brief and is not templated.
-3. Build by reusing components; write the palette/fonts into the tokens.
+3. Build by reusing components; write the palette/fonts into the tokens. Add
+   the starter packs the brief needs (`npm run pack:add`) rather than
+   hand-writing routing, forms, SEO or a backend.
 4. For non-trivial motion, use `src/components/motion/` primitives and run the
    `review-animations` skill; fix what it flags.
 5. `impeccable detect src/` → fix every flag.
@@ -196,7 +255,8 @@ npm run format     # prettier --write
    `src/components/` and real animation from `src/components/motion/`.
 4. **Review motion** with `review-animations`; fix what it flags.
 5. **Gate:** `npm run slop:check` + `npm run design:check` + build + typecheck +
-   lint must all pass. Open a PR.
+   lint must all pass (plus `npm run qa` and `npm run seo:check` if those packs
+   are in). Open a PR.
 
 The design-process gate (`scripts/verify-design-process.mjs`, wired into the
 pre-push hook + CI) hard-fails any themed build that reuses `examples/`, imports

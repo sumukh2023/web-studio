@@ -1,0 +1,10 @@
+{
+  "name": "fonts",
+  "title": "Self-hosted fonts",
+  "summary": "Replace the Google Fonts link with @fontsource packages: same-origin, no third-party request, only the subsets and weights you use.",
+  "when": "Before launch, once the font pairing is final. Faster first paint, no visitor IPs sent to Google (a GDPR issue in the EU), simpler CSP.",
+  "scripts": { "fonts:self-host": "node scripts/self-host-fonts.mjs" },
+  "next": [
+    "Run npm run fonts:self-host -- \"<Family>:<weights>\" for each family in tailwind.config.ts fontFamily, e.g. \"Inter:400,500,600\" \"Sora:600,700\"."
+  ]
+}

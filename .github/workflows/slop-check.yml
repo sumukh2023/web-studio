@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Run impeccable slop detector
         run: npx --yes impeccable@2.3.2 detect src/
   design-process:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       # Fails a themed build that reuses the example skeleton, uses no motion
       # primitives, or ships without a ui-ux-pro-max design brief.
       - name: Verify design process

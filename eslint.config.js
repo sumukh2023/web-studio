@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', 'examples'] },
+  { ignores: ['dist', 'dist-prerender', 'node_modules', 'examples', 'packs'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -54,6 +54,12 @@ export default tseslint.config(
       'react-refresh/only-export-components': 'off',
       'react-hooks/exhaustive-deps': 'off',
     },
+  },
+  {
+    // Serverless functions (added by the `api` starter pack) run on Node.
+    files: ['api/**/*.ts'],
+    languageOptions: { globals: globals.node },
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
   prettier
 );

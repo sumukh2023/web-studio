@@ -1,0 +1,4 @@
+#!/bin/sh
+# human-attribution pack: refuse tool/bot identities and co-author trailers.
+repo_root=$(git rev-parse --show-toplevel) || exit 1
+exec python3 "$repo_root/scripts/check-attribution.py" message "$1"
