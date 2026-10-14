@@ -1,0 +1,47 @@
+{
+  "name": "auth",
+  "title": "Accounts, sign-in and roles",
+  "summary": "Email + password sign-in with Argon2id, server-side sessions in an HttpOnly cookie, lockout, roles, and a React session provider.",
+  "when": "Some pages or actions are for signed-in people only (an admin desk, staff tools, a members area). Not needed for a public marketing site.",
+  "requires": [
+    "api",
+    "supabase",
+    "forms"
+  ],
+  "dependencies": {
+    "@node-rs/argon2": "^2.0.2"
+  },
+  "scripts": {
+    "auth:hash": "node scripts/hash-password.mjs"
+  },
+  "vercel": {
+    "rewrites": [
+      {
+        "source": "/api/auth/:action",
+        "destination": "/api/auth?action=:action"
+      }
+    ]
+  },
+  "inject": [
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:imports",
+      "lines": [
+        "import { SessionProvider } from '@/auth/SessionProvider';"
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "marker": "packs:wrap",
+      "lines": [
+        "providers.push((app) => <SessionProvider>{app}</SessionProvider>);"
+      ]
+    }
+  ],
+  "next": [
+    "Apply supabase/migrations/*_accounts_and_sessions.sql.",
+    "Create the first admin: `npm run auth:hash -- you@example.com \"Your Name\" admin`, then paste the printed SQL into Supabase.",
+    "Guard every protected api/ route with requireAccount/requireRole from api/_auth.ts. The client guard is a convenience, not the security boundary.",
+    "Guard UI with <RequireRole role=\"staff\" fallback={<LoginForm />}> (the SessionProvider is already wrapped around the app in src/main.tsx)."
+  ]
+}

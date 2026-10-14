@@ -9,7 +9,11 @@ import { RootLayout } from '@/layouts/RootLayout';
 export default function App() {
   return (
     <RootLayout chrome={false}>
-      <main className="grid min-h-screen place-items-center p-8">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="grid min-h-screen place-items-center p-8 outline-none"
+      >
         <div className="max-w-md text-center">
           <p className="font-heading text-sm font-semibold uppercase tracking-widest text-primary">
             Web Studio

@@ -1,0 +1,10 @@
+{
+  "name": "gallery",
+  "title": "Photo gallery + lightbox",
+  "summary": "A masonry photo wall of real buttons and a fullscreen lightbox that grows out of the clicked photo, with keyboard, focus and scroll handled.",
+  "when": "The brief has photographs worth looking at: past events, a portfolio, a venue, products.",
+  "requires": ["images"],
+  "next": [
+    "Put photos in public/ (they get AVIF/WebP automatically) and render <PhotoGrid photos={[{ id, src, alt, width, height }]} />."
+  ]
+}

@@ -1,0 +1,31 @@
+name: Human contributor attribution
+
+# Checks only the commits this push or pull request adds, so history that
+# predates the policy (e.g. the starter's own) never fails a build.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject tool and bot contributor attribution
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then RANGE="$PR_BASE..$PR_HEAD"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then RANGE="$BEFORE..$SHA"
+          else RANGE="$SHA^!"; fi
+          python3 scripts/check-attribution.py range "$RANGE"

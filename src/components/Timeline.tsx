@@ -1,3 +1,4 @@
+import { REVEAL_VIEWPORT } from '@/utils/motion';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
@@ -21,7 +22,7 @@ export function Timeline({ items, className }: TimelineProps) {
       <motion.div
         initial={{ scaleY: 0 }}
         whileInView={{ scaleY: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={REVEAL_VIEWPORT}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         className="absolute left-[7px] top-2 h-full w-px origin-top bg-gradient-to-b from-primary via-accent to-transparent sm:left-1/2 sm:-translate-x-1/2"
       />
@@ -32,7 +33,7 @@ export function Timeline({ items, className }: TimelineProps) {
             key={item.title}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
+            viewport={REVEAL_VIEWPORT}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
               'relative pl-10 sm:w-1/2 sm:pl-0',

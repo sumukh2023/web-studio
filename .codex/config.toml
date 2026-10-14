@@ -1,0 +1,5 @@
+# Lets Codex drive a real browser against `npm run dev` (Playwright MCP).
+# Claude Code users get the same via the Claude desktop preview / launch.json.
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest"]

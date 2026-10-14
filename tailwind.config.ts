@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import animate from 'tailwindcss-animate';
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
   darkMode: ['class'],
@@ -79,14 +80,6 @@ const config: Config = {
           '0 1px 2px hsl(0 0% 0% / 0.2), 0 8px 24px -8px hsl(0 0% 0% / 0.35)',
       },
       keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
         aurora: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
@@ -94,6 +87,14 @@ const config: Config = {
         marquee: {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(-50%)' },
+        },
+        'infinite-slider-x': {
+          from: { transform: 'translate3d(0, 0, 0)' },
+          to: { transform: 'translate3d(-50%, 0, 0)' },
+        },
+        'infinite-slider-y': {
+          from: { transform: 'translate3d(0, 0, 0)' },
+          to: { transform: 'translate3d(0, -50%, 0)' },
         },
         shimmer: {
           '100%': { transform: 'translateX(100%)' },
@@ -104,15 +105,37 @@ const config: Config = {
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.25s ease-out',
-        'accordion-up': 'accordion-up 0.25s ease-out',
         aurora: 'aurora 12s ease infinite',
         marquee: 'marquee 30s linear infinite',
+        // InfiniteSlider runs on the compositor as a CSS animation; the
+        // component measures its content and sets the duration variable.
+        'infinite-slider-x':
+          'infinite-slider-x var(--infinite-slider-duration) linear infinite',
+        'infinite-slider-y':
+          'infinite-slider-y var(--infinite-slider-duration) linear infinite',
         float: 'float 6s ease-in-out infinite',
       },
     },
   },
-  plugins: [animate],
+  plugins: [
+    animate,
+    /* WHAT THIS DEVICE CAN AFFORD, as a variant: `rich:`, `lite:`, `still:`.
+
+       Matches `<html data-motion="...">`, which the `motion-budget` starter
+       pack writes (`npm run pack:add motion-budget`). A blur, a shadow or a
+       sticky layer costs nothing to declare and a great deal to paint, so
+       those are gated in CSS: `rich:backdrop-blur-xl` paints only where it is
+       affordable and the base class is what every phone gets. Without the
+       pack the attribute is absent and these variants simply never match.
+
+       `:where()` holds the variant at zero specificity, so it composes with
+       hover, focus and the breakpoints in either order. */
+    plugin(({ addVariant }) => {
+      addVariant('rich', ':where(html[data-motion="full"]) &');
+      addVariant('lite', ':where(html[data-motion="lite"]) &');
+      addVariant('still', ':where(html[data-motion="still"]) &');
+    }),
+  ],
 };
 
 export default config;

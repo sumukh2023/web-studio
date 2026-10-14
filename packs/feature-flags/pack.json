@@ -1,0 +1,11 @@
+{
+  "name": "feature-flags",
+  "title": "Feature switches (no-deploy on/off)",
+  "summary": "Database-backed switches that turn a feature on or off on the next request, with no deploy. Off by default.",
+  "when": "Something must open or close at a moment you choose (sales, registrations, a form, a new payment method), or be built and shipped dark.",
+  "requires": ["supabase"],
+  "next": [
+    "Apply the new migration, then add a row per switch (see packs/feature-flags/README.md).",
+    "List switches the browser may ask about in PUBLIC_SWITCHES in api/features.ts."
+  ]
+}

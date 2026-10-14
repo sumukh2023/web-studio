@@ -1,0 +1,21 @@
+{
+  "name": "supabase",
+  "title": "Supabase database (server-side)",
+  "summary": "Postgres via Supabase's REST API from api/, a rate-limit ledger, and migration guard rails.",
+  "when": "Anything must persist: form submissions, bookings, users, orders, content an admin edits. Server-side only; the browser never holds the service key.",
+  "requires": ["api"],
+  "scripts": {
+    "db:check": "node scripts/db-check-migrations.mjs"
+  },
+  "env": [
+    "# Server-side only (api/). NEVER prefix these with VITE_: the service-role",
+    "# key bypasses Row Level Security and must not reach a browser.",
+    "SUPABASE_URL=https://YOUR-PROJECT-ref.supabase.co",
+    "SUPABASE_SERVICE_ROLE_KEY=your-service-role-key"
+  ],
+  "next": [
+    "Create a Supabase project, then set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env (local) and in the Vercel project (Settings, Environment Variables).",
+    "Apply supabase/migrations/ in order (Supabase CLI `supabase db push`, or paste into the SQL editor).",
+    "Read packs/supabase/README.md 'The standing rule' before changing any table or function in production."
+  ]
+}

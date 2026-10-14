@@ -48,7 +48,13 @@ npm run preview  # preview the production build
 | `npm run lint:fix`     | ESLint with autofix                         |
 | `npm run format`       | Prettier write                              |
 | `npm run format:check` | Prettier check (CI-friendly)                |
-| `npm run typecheck`    | `tsc --noEmit`                              |
+| `npm run typecheck`    | `tsc --noEmit` over the app (and `api/` once the api pack is in) |
+| `npm run slop:check`   | impeccable anti-pattern detector over `src/` |
+| `npm run design:check` | design-process gate (brief, no template reuse, real motion) |
+| `npm run pack:list`    | list the starter packs and what is installed |
+| `npm run pack:add -- <name>` | install a starter pack (see below)  |
+| `npm run pack:doctor`  | check manifests and installed packs         |
+| `npm run pack:test`    | install packs into a throwaway copy and run every gate |
 
 ## Project structure
 
@@ -62,13 +68,17 @@ src/
     *.tsx                # Navbar, Hero, Footer, Section, GlassCard, BentoGrid,
                          # FeatureCard, Timeline, Stats, FAQ, Marquee,
                          # AnimatedButton, CursorGlow, ScrollProgress
-  hooks/                 # useLenis, useScrollProgress, useMediaQuery, useMousePosition
-  layouts/               # RootLayout (smooth scroll + global chrome)
-  sections/              # landing-page sections composed from components
+    motion/              # 33 vendored Motion Primitives (TextEffect, InView, Magnetic, …)
+  hooks/                 # useLenis, useScrollProgress, useMediaQuery, useMousePosition,
+                         # useDeviceTier, useDialog
+  layouts/               # RootLayout (smooth scroll + global chrome + skip link)
   styles/                # globals.css (design tokens live here)
-  utils/                 # cn() + shared motion tokens
+  utils/                 # cn(), motion tokens, page-scroll, fetch-priority
   App.tsx                # the from-scratch shell — replace it with your build
-  main.tsx               # entry point
+  main.tsx               # entry point (with packs:* markers starter packs install into)
+packs/                   # opt-in starter packs, installed with npm run pack:add
+examples/landing-demo/   # the old demo page: reference only, never import it
+.claude/skills/          # design database, anti-slop skills, starter-packs skill
 ```
 
 Everything is re-exported through barrels, so imports stay tidy:
@@ -145,6 +155,48 @@ npx shadcn@latest add dialog tabs tooltip
 
 They land in `src/components/ui` with the right aliases and tokens.
 
+## Starter packs
+
+The core stays small. Everything a real launch needs beyond a static page is
+an **opt-in pack**, already debugged and hardened against real traffic.
+Claude Code reads the `starter-packs` skill and installs what the brief needs;
+you can too:
+
+```bash
+npm run pack:list
+npm run pack:add -- router seo forms
+```
+
+`pack:add` copies the files, merges `package.json` / `vercel.json` /
+`.env.example` / `.gitignore`, wires providers into `src/main.tsx`, installs
+dependencies, pulls in required packs, and prints what is left for you to do
+(env vars, migrations). Each pack's `README.md` explains it in full.
+
+| Pack | What you get |
+| --- | --- |
+| `router` | Multi-page React Router: lazy pages, scroll restored correctly on Back, `#hash` landing under the nav, 404 page, Vercel rewrite |
+| `seo` | Per-route title/description/canonical/Open Graph/JSON-LD from one config; build-time prerender so link previews work; sitemap, robots, 404.html |
+| `images` | AVIF/WebP variants of every photo, a `<Picture>` drop-in, full favicon + app-icon set from one logo |
+| `gallery` | Masonry photo wall + fullscreen lightbox that grows out of the photo; keyboard, focus and scroll handled |
+| `forms` | Floating-label accessible fields, honeypot, submit hook, and a working contact form stored + emailed |
+| `api` | Typed Vercel functions with request/crypto helpers |
+| `supabase` | Postgres over REST from `api/`, rate-limit ledger, migration guard rails |
+| `email` | Resend with retries, idempotency and an escaped HTML shell |
+| `auth` | Argon2id sign-in, server-side HttpOnly sessions, lockout, roles |
+| `feature-flags` | Database switches that open/close features with no deploy |
+| `event-kit` | Live countdown, per-device Add to Calendar, generated `.ics` |
+| `payments-upi` | UPI QR + per-app deep links, UTR claim, manual reconciliation (India, no gateway) |
+| `india` | ₹ lakh/crore formatting, mobile normalisation, PAN/GSTIN/IFSC/UPI validation |
+| `live-updates` | Announcements that appear instantly via Supabase Realtime, polling fallback |
+| `motion-budget` | still / lite / full motion levels per device, in JS and as `rich:`/`lite:`/`still:` variants |
+| `splash` | First-paint splash that never flashes on a cached visit |
+| `security-headers` | CSP, HSTS, frame/permission headers, immutable asset caching, CSP reporter |
+| `analytics` | Vercel Analytics + Speed Insights with token-bearing URLs scrubbed |
+| `fonts` | Self-host the brief's fonts (latin subsets only), drop Google Fonts |
+| `surfaces` | Static, token-driven depth utilities (+ opt-in glass) |
+| `qa` | Every route in Chromium at 390px and 1440px: overflow, errors, a11y basics, screenshots |
+| `human-attribution` | Hooks + CI that keep AI tools out of commit authorship |
+
 ## Tech stack
 
 | Area       | Choice                                                    |
@@ -160,7 +212,9 @@ They land in `src/components/ui` with the right aliases and tokens.
 ## Deployment
 
 Vercel-ready out of the box. Import the repo, accept defaults (build `npm run build`,
-output `dist`), and ship. Any static host works — the build is a plain SPA.
+output `dist`), and ship. Without backend packs any static host works — the build
+is a plain SPA. The `api`-based packs (forms, auth, payments, live updates) run as
+Vercel functions; set their environment variables in the Vercel project.
 
 ## Your first build
 
@@ -173,8 +227,11 @@ output `dist`), and ship. Any static host works — the build is a plain SPA.
    a structure that fits *your* idea, not a copy-pasted template.
 4. **Animate it** — layer in reveals, cursor glow, smooth scroll from
    `src/components/motion/` for the premium feel.
-5. **Ship** — `npm run build` passes clean → deploy → you've shipped a real,
-   polished site.
+5. **Make it real** — add the starter packs the brief needs (more pages, a
+   form that actually sends, SEO, a gallery…) with `npm run pack:add`.
+6. **Ship** — the gates pass clean (`build`, `typecheck`, `lint`,
+   `slop:check`, `design:check`; plus `npm run qa` if you added it) → deploy →
+   you've shipped a real, polished site.
 
 ---
 

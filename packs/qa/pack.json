@@ -1,0 +1,13 @@
+{
+  "name": "qa",
+  "title": "Browser QA at phone + desktop width",
+  "summary": "One command that opens every route of the built site in Chromium at 390px and 1440px and fails on overflow, errors, broken requests, heading/landmark/alt/name problems, with screenshots.",
+  "when": "Before every PR or demo. Especially after layout work: horizontal overflow on phones is the most common bug in a fresh build.",
+  "devDependencies": { "playwright-core": "^1.56.1" },
+  "scripts": { "qa": "node scripts/qa.mjs" },
+  "gitignore": [".cache/"],
+  "next": [
+    "npm run build && npm run qa. Open .cache/qa/*.png and actually look at them.",
+    "No Chromium? npx playwright install chromium (or set QA_CHROMIUM)."
+  ]
+}

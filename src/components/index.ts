@@ -37,6 +37,7 @@ export { CursorGlow } from './CursorGlow';
 export type { CursorGlowProps } from './CursorGlow';
 export { ScrollProgress } from './ScrollProgress';
 export type { ScrollProgressProps } from './ScrollProgress';
+export { SkipLink } from './SkipLink';
 
 // Decorative assets
 export { AuroraBackground } from './assets/AuroraBackground';

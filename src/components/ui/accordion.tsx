@@ -37,20 +37,51 @@ const AccordionTrigger = React.forwardRef<
 ));
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
+type AccordionContentProps = React.ComponentPropsWithoutRef<'div'> & {
+  open: boolean;
+};
+
 const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-    {...props}
-  >
-    <div className={cn('pb-5 pr-8 text-muted-foreground', className)}>
-      {children}
+  HTMLDivElement,
+  AccordionContentProps
+>(({ className, children, open, style, ...props }, ref) => {
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const measure = () =>
+      setContentHeight(content.getBoundingClientRect().height);
+    measure();
+
+    if (!window.ResizeObserver) return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      role="region"
+      aria-hidden={!open}
+      {...(open ? {} : ({ inert: '' } as Record<string, string>))}
+      data-state={open ? 'open' : 'closed'}
+      className="faq-content overflow-hidden text-sm transition-[height] ease-out [transition-duration:250ms] motion-reduce:[transition-duration:0ms]"
+      style={{ ...style, height: open ? contentHeight : 0 }}
+      {...props}
+    >
+      <div
+        ref={contentRef}
+        className={cn('pb-5 pr-8 text-muted-foreground', className)}
+      >
+        {children}
+      </div>
     </div>
-  </AccordionPrimitive.Content>
-));
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+  );
+});
+AccordionContent.displayName = 'AccordionContent';
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

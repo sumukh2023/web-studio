@@ -1,0 +1,12 @@
+{
+  "name": "forms",
+  "title": "Accessible forms + contact pipeline",
+  "summary": "Floating-label fields, honeypot, submit hook and a working contact form wired to a rate-limited, stored, emailed API route.",
+  "when": "The site has a contact, enquiry, RSVP, waitlist or sign-up form that must actually reach someone.",
+  "requires": ["api", "supabase", "email"],
+  "next": [
+    "Apply supabase/migrations/*_contact_messages.sql.",
+    "Render <ContactForm /> where the brief needs it, or compose your own form from src/forms/fields.tsx + useSubmit.",
+    "Restyle freely: every class is a design token, nothing is hard-coded."
+  ]
+}

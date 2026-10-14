@@ -1,0 +1,28 @@
+{
+  "name": "payments-upi",
+  "title": "UPI QR payments (India, no gateway)",
+  "summary": "Server-priced payment records, a scannable UPI QR with per-app deep links on phones, UTR submission with one-use enforcement, and manual reconciliation.",
+  "when": "Collecting money in India without a payment gateway: event tickets, stall fees, donations, small orders paid to a business UPI ID.",
+  "requires": [
+    "api",
+    "supabase",
+    "forms",
+    "india"
+  ],
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.6"
+  },
+  "env": [
+    "# Public by nature (printed on every QR). The UPI ID money is paid to.",
+    "VITE_UPI_PAYEE_ADDRESS=yourbusiness@okaxis",
+    "VITE_UPI_PAYEE_NAME=\"Your Business\""
+  ],
+  "next": [
+    "Apply supabase/migrations/*_upi_payments.sql and set VITE_UPI_PAYEE_ADDRESS / VITE_UPI_PAYEE_NAME.",
+    "From the route that records an order, call createPayment(env, { purpose, amountRupees }) and send the payer to a page that GETs /api/payments?ref= and renders <UpiQrPayment amount reference /> and <UtrForm reference />.",
+    "Test on real Android and iOS phones with real UPI apps before launch. A launched app is never proof of payment."
+  ]
+}

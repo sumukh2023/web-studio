@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { containerVariants, childVariants } from '@/utils/motion';
+import {
+  REVEAL_VIEWPORT,
+  childVariants,
+  containerVariants,
+} from '@/utils/motion';
 
 export interface GalleryItem {
   /** Image URL. If omitted, a themed gradient placeholder is shown. */
@@ -34,7 +38,7 @@ export function Gallery({ items, className, columns = 3 }: GalleryProps) {
       variants={containerVariants(0.06)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={REVEAL_VIEWPORT}
       className={cn(
         'grid auto-rows-[180px] grid-cols-1 gap-4',
         colMap[columns],
