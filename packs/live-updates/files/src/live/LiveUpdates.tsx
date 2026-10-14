@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Bell, X } from 'lucide-react';
 import { useDialog } from '@/hooks/useDialog';
+import { cn } from '@/utils/cn';
 import { EASE } from '@/utils/motion';
 import { useLiveUpdates } from './useLiveUpdates';
 
@@ -12,8 +13,14 @@ const when = (iso: string | null) =>
  * A floating "Updates" button with an unread badge, opening a panel of
  * announcements. A real dialog (useDialog: Escape, focus trap and return,
  * inert background, no page scroll) that slides from the corner.
+ *
+ * ON A PHONE IT IS A 44px ICON, not a labelled pill: a floating control is
+ * drawn over the page, and at 390px a pill covered a payment page's app
+ * choices and its submit button (found in the sandbox test). The label stays
+ * for screen readers. Pages with a primary action in the bottom-right corner
+ * can move it with `className` (e.g. "bottom-24") or not render it there.
  */
-export function LiveUpdates() {
+export function LiveUpdates({ className }: { className?: string }) {
   const { updates, unread, live, markSeen } = useLiveUpdates();
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
@@ -22,7 +29,7 @@ export function LiveUpdates() {
   useDialog({ open, onClose: close, panel });
 
   return (
-    <div className="fixed bottom-5 right-5 z-50">
+    <div className={cn('fixed bottom-4 right-4 z-50 sm:bottom-5 sm:right-5', className)}>
       <button
         type="button"
         onClick={() => {
@@ -31,12 +38,12 @@ export function LiveUpdates() {
         }}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="relative inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm font-medium text-foreground shadow-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="relative inline-flex size-11 items-center justify-center gap-2 rounded-full border border-border bg-card text-sm font-medium text-foreground shadow-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:size-auto sm:min-h-11 sm:px-4"
       >
         <Bell aria-hidden="true" className="size-4" />
-        Updates
+        <span className="sr-only sm:not-sr-only">Updates</span>
         {unread > 0 && (
-          <span className="grid min-w-5 place-items-center rounded-full bg-primary px-1.5 text-xs font-semibold tabular-nums text-primary-foreground">
+          <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-primary px-1.5 text-xs font-semibold tabular-nums text-primary-foreground sm:static">
             {unread}
             <span className="sr-only"> unread</span>
           </span>

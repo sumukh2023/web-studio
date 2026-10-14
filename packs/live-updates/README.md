@@ -21,7 +21,11 @@ insert into public.updates (title, message, priority, cta_label, cta_url, publis
 values ('Gate 2 is open', 'Entry for pass holders from 10:00.', 'high', 'Get directions', '/visit', true, now());
 ```
 
-Unpublish by setting `published = false`; open browsers remove it live.
+Unpublish by setting `published = false`: open browsers drop it within 30
+seconds (or at once when the tab is next focused). Realtime cannot deliver
+that change itself, because RLS hides the now-unpublished row from the anon
+key, so the list is reconciled on a timer. To remove something instantly,
+`delete` the row instead: deletes are delivered live.
 Use the `auth` pack to build a small staff page that does this without SQL.
 
 `cta_url` must start with `https://` or `/` (a CHECK constraint), so a

@@ -76,19 +76,26 @@ export function useLiveUpdates() {
         .then(({ createClient }) => {
           if (cancelled) return;
           const client = createClient(url, anon);
-          void client
-            .from('updates')
-            .select('id,title,message,priority,cta_label,cta_url,published_at,created_at')
-            .eq('published', true)
-            .order('published_at', { ascending: false, nullsFirst: false })
-            .limit(50)
-            .then(({ data, error }) => {
-              if (data) apply(data as LiveUpdate[]);
-              if (error) startPolling();
-            });
+          const reload = () =>
+            client
+              .from('updates')
+              .select('id,title,message,priority,cta_label,cta_url,published_at,created_at')
+              .eq('published', true)
+              .order('published_at', { ascending: false, nullsFirst: false })
+              .limit(50)
+              .then(({ data, error }) => {
+                if (data) apply(data as LiveUpdate[]);
+                if (error) startPolling();
+              });
+          void reload();
           const channel = client
             .channel('live-updates')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'updates' }, (payload) => {
+              if (payload.eventType === 'DELETE') {
+                const gone = (payload.old as { id?: string })?.id;
+                if (gone) setUpdates((current) => current.filter((u) => u.id !== gone));
+                return;
+              }
               const row = payload.new as LiveUpdate & { published?: boolean };
               if (!row?.id) return;
               setUpdates((current) => {
@@ -101,8 +108,19 @@ export function useLiveUpdates() {
               setLive(status === 'SUBSCRIBED');
               if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') startPolling();
             });
+          /* RECONCILE, BECAUSE REALTIME CANNOT SAY "GONE". Realtime applies
+             RLS to the NEW row, and an unpublished row is one the anon key may
+             no longer read, so the event that would remove it is never
+             delivered: open browsers kept showing an unpublished update
+             (found by the sandbox test). So the list is re-read every 30s while
+             the tab is visible, and as soon as it becomes visible again. */
+          const reconcile = window.setInterval(() => !document.hidden && void reload(), 30_000);
+          const onVisible = () => !document.hidden && void reload();
+          document.addEventListener('visibilitychange', onVisible);
           const previous = cleanup;
           cleanup = () => {
+            window.clearInterval(reconcile);
+            document.removeEventListener('visibilitychange', onVisible);
             void client.removeChannel(channel);
             previous?.();
           };
